@@ -1,0 +1,54 @@
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+
+public class AwardBudgetCuts {
+
+    // Function to find the grant cap
+    public static double findGrantCap(double[] grantsArray, double newBudget) {
+        // Sort the grants array in descending order
+        Arrays.sort(grantsArray);
+        int n = grantsArray.length;
+        int i = n - 1;
+        boolean flag = false;
+        double cap = newBudget / n;
+        newBudget = newBudget;
+
+        while (!flag) {
+            // Reduce the budget by the grants that are less than the current cap
+            while (i >= 0 && cap > grantsArray[i]) {
+                newBudget -= grantsArray[i];
+                i--;
+            }
+
+            // Calculate the new cap
+            double newCap = newBudget / (i + 1);
+
+            // Check if the cap has stabilized
+            if (cap == newCap) {
+                flag = true;
+            }
+
+            cap = newCap;
+        }
+
+        return cap;
+    }
+
+    // Unit tests
+    public static class Testing {
+        @Test
+        public void testFindGrantCap() {
+            assertEquals(47.0, findGrantCap(new double[]{2, 100, 50, 120, 1000}, 190), 0.1);
+            assertEquals(1.5, findGrantCap(new double[]{2, 4}, 3), 0.1);
+            assertEquals(1.0, findGrantCap(new double[]{2, 4, 6}, 3), 0.1);
+            assertEquals(47.0, findGrantCap(new double[]{2, 100, 50, 120, 1000}, 190), 0.1);
+            assertEquals(128.0, findGrantCap(new double[]{2, 100, 50, 120, 167}, 400), 0.1);
+            assertEquals(23.8, findGrantCap(new double[]{21, 100, 50, 120, 130, 110}, 140), 0.1);
+            assertEquals(211.0, findGrantCap(new double[]{210, 200, 150, 193, 130, 110, 209, 342, 117}, 1530), 0.1);
+        }
+    }
+
+    public static void main(String[] args) {
+        // Run the unit tests
+        org.junit.runner.JUnitCore.main("AwardBudgetCuts$Testing");
+    }
