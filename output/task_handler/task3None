@@ -1,9 +1,0 @@
-
-// This is a placeholder for the actual logic that would be implemented
-// in the Python file task_handler/task3.py
-
-public class Task3 {
-    public static void main(String[] args) {
-        // Simulate the "CUSTOMS CHECK" functionality
-        System.out.println("CUSTOMS CHECK");
-    }
