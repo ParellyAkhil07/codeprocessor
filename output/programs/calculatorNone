@@ -1,0 +1,106 @@
+import static org.junit.Assert.assertEquals;
+import java.util.Stack;
+
+public class Calculator {
+
+    public static double evaluate(String expression) {
+        expression = expression.replaceAll(" ", "");
+        Stack<Integer> parensIndices = new Stack<>();
+        StringBuilder storage = new StringBuilder();
+        int[] operators = new int[4]; // Indices for *, /, +, -
+
+        for (int i = 0; i < expression.length(); i++) {
+            char charAt = expression.charAt(i);
+            if (charAt == '(') {
+                parensIndices.push(i);
+            } else if (charAt == ')') {
+                int start = parensIndices.pop() + 1;
+                double total = calculate(expression.substring(start, i), operators);
+                storage.setLength(start - 1);
+                storage.append(total);
+            } else {
+                storage.append(charAt);
+            }
+
+            if (charAt == '*' || charAt == '/' || charAt == '+' || charAt == '-') {
+                operators[operatorIndex(charAt)] = i;
+            }
+        }
+
+        return calculate(storage.toString(), operators);
+    }
+
+    private static double calculate(String innerExpression, int[] operators) {
+        double total = 0;
+        StringBuilder newExpr = new StringBuilder(innerExpression);
+
+        for (int i = 0; i < innerExpression.length(); i++) {
+            char charAt = innerExpression.charAt(i);
+            if (charAt == '*' || charAt == '/' || charAt == '+' || charAt == '-') {
+                operators[operatorIndex(charAt)] = i;
+            }
+        }
+
+        total = processOperators(newExpr, operators, '*', '/');
+        total = processOperators(newExpr, operators, '-', '+');
+
+        return total;
+    }
+
+    private static double processOperators(StringBuilder expr, int[] operators, char op1, char op2) {
+        for (int i = 0; i < operators.length; i++) {
+            if (operators[i] != 0) {
+                int opIndex = operators[i];
+                double prev = Double.parseDouble(String.valueOf(expr.charAt(opIndex - 1)));
+                double next = Double.parseDouble(String.valueOf(expr.charAt(opIndex + 1)));
+                double total = 0;
+
+                if (expr.charAt(opIndex) == op1) {
+                    total = prev * next;
+                } else if (expr.charAt(opIndex) == op2) {
+                    total = prev / next;
+                }
+
+                expr.replace(opIndex - 1, opIndex + 2, String.valueOf(total));
+            }
+        }
+        return Double.parseDouble(expr.toString());
+    }
+
+    private static int operatorIndex(char operator) {
+        switch (operator) {
+            case '*': return 0;
+            case '/': return 1;
+            case '+': return 2;
+            case '-': return 3;
+            default: return -1;
+        }
+    }
+
+    public static class Testing {
+
+        @Test
+        public void testNoParens() {
+            assertEquals(7, evaluate("1 + 3 * 2"), 0.001);
+        }
+
+        @Test
+        public void testSingleParens() {
+            assertEquals(16, evaluate("(1 + 7) * 2"), 0.001);
+        }
+
+        @Test
+        public void testOperationsOrder() {
+            assertEquals(29, evaluate("4 * (1 + 7) - 3"), 0.001);
+        }
+
+        @Test
+        public void testLongParens() {
+            assertEquals(-6, evaluate("(4 - 7 - 1) * 3"), 0.001);
+        }
+
+        @Test
+        public void testDecimals() {
+            assertEquals(6.25, evaluate("(1.2 + 1.3) * 2.5"), 0.001);
+        }
+    }
