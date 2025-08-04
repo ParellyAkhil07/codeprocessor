@@ -1,0 +1,39 @@
+// Using a check method return true if it is called at least N times (actions) in up to Q seconds. Otherwise, return false.
+
+import java.time.LocalTime;
+import java.time.Duration;
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class RateChecker {
+
+    private int actions;
+    private int seconds;
+    private Queue<LocalTime> times; // Queue needed to keep track of how many times it's being checked
+
+    public RateChecker(int actions, int seconds) {
+        this.actions = actions;
+        this.seconds = seconds;
+        this.times = new LinkedList<>();
+    }
+
+    public boolean check() {
+        LocalTime currentTime = LocalTime.now();
+        times.add(currentTime); // Append each check time to the queue
+
+        if (times.size() > actions) { // First check if the queue is greater than the number of actions
+            return false; // Returning false here gives a quick win
+        }
+
+        // Check times in the queue
+        // (Slower approach if the queue is really huge, hence why queue length vs. actions should be checked first.)
+        return Duration.between(times.poll(), currentTime).getSeconds() <= seconds;
+    }
+
+    public static void main(String[] args) {
+        RateChecker clicks = new RateChecker(3, 14);
+        System.out.println(clicks.check()); // Example usage
+        System.out.println(clicks.check());
+        System.out.println(clicks.check());
+        System.out.println(clicks.check());
+    }
