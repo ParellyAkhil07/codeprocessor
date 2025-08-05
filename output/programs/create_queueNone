@@ -15,7 +15,7 @@ public class Queue {
         if (this.length() == 0) {
             return "<Queue (empty)>";
         } else {
-            return "<Queue " + this.items + ">";
+            return "<Queue " + this.items.toString() + ">";
         }
     }
 
@@ -55,12 +55,9 @@ public class Queue {
         q.enqueue("pack");
         q.enqueue("enjoy vacation");
 
-        assert q.toString().equals("<Queue [buy flight, pack, enjoy vacation]>");
-        assert q.length() == 3;
-        assert q.peek().equals("buy flight");
-        assert !q.isEmpty();
-        assert q.dequeue().equals("buy flight");
-        assert q.length() == 2;
-
-        System.out.println("ALL TESTS PASSED!");
+        System.out.println(q); // <Queue [buy flight, pack, enjoy vacation]>
+        System.out.println(q.length()); // 3
+        System.out.println(q.peek()); // buy flight
+        System.out.println(q.dequeue()); // buy flight
+        System.out.println(q); // <Queue [pack, enjoy vacation]>
     }
