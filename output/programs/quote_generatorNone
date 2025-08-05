@@ -1,11 +1,11 @@
 
-public class QuoteGenerator {
-    private int lastRandNum;
+class QuoteGenerator {
+
+    private int lastRandNum = -1;
     private String[] quotes;
 
-    // Constructor to initialize the QuoteGenerator with quotes
+    // Constructor to initialize quotes
     public QuoteGenerator(String[] quotes) {
-        this.lastRandNum = -1;
         this.quotes = quotes;
     }
 
@@ -14,13 +14,11 @@ public class QuoteGenerator {
         Random rand = new Random();
         int randomNum = rand.nextInt(quotes.length);
 
-        // Check if the generated number is different from the last one
         if (randomNum != lastRandNum) {
             lastRandNum = randomNum;
             return quotes[randomNum];
         } else {
-            // Recursive call if the same number is generated
-            return generateQuote();
+            return generateQuote(); // Recursive call if the same number is generated
         }
     }
 
@@ -28,7 +26,7 @@ public class QuoteGenerator {
         String[] quotes = {"hi", "hello", "goodbye", "dog", "cat", "banana"};
         QuoteGenerator generator1 = new QuoteGenerator(quotes);
 
-        // Print generated quotes
+        // Print random quotes
         System.out.println(generator1.generateQuote());
         System.out.println(generator1.generateQuote());
         System.out.println(generator1.generateQuote());
