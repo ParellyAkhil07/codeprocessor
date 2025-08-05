@@ -2,17 +2,18 @@ import java.util.Set;
 
 public class Coins {
 
-    // Method to find change from combinations of `numCoins` of dimes and pennies
+    // Method to find change from combinations of `num_coins` of dimes and pennies
     public static Set<Integer> coins(int numCoins) {
         Set<Integer> combos = new HashSet<>();
         int[] coins = {1, 10};
 
-        // Helper method to calculate combinations
+        // Recursive helper function
         _coins(numCoins, combos, 0, coins);
 
         return combos;
     }
 
+    // Helper method for recursive calculation
     private static void _coins(int coinsLeft, Set<Integer> combos, int total, int[] coins) {
         if (coinsLeft == 0) {
             combos.add(total);
@@ -24,18 +25,19 @@ public class Coins {
         }
     }
 
-    // Method to find change from combinations of `numCoins` of dimes and pennies
+    // Alternative method to find change from combinations of `num_coins` of dimes and pennies
     public static Set<Integer> coins_2(int numCoins) {
         Set<Integer> combos = new HashSet<>();
         int dimes = 10;
         int pennies = 1;
 
-        // Helper method to calculate combinations
+        // Recursive helper function
         _coins_2(numCoins, combos, 0, dimes, pennies);
 
         return combos;
     }
 
+    // Helper method for recursive calculation
     private static void _coins_2(int coinsLeft, Set<Integer> combos, int total, int dimes, int pennies) {
         if (coinsLeft == 0) {
             combos.add(total);
@@ -47,18 +49,18 @@ public class Coins {
     }
 
     public static void main(String[] args) {
-        // Test cases to verify the correctness
-        System.out.println(coins(1).equals(Set.of(1, 10)));
-        System.out.println(coins(2).equals(Set.of(2, 11, 20)));
-        System.out.println(coins(3).equals(Set.of(3, 12, 21, 30)));
-        System.out.println(coins(4).equals(Set.of(4, 13, 22, 31, 40)));
-        System.out.println(coins(10).equals(Set.of(10, 19, 28, 37, 46, 55, 64, 73, 82, 91, 100)));
+        // Test cases
+        System.out.println(coins(1).equals(Set.of(1, 10))); // True
+        System.out.println(coins(2).equals(Set.of(2, 11, 20))); // True
+        System.out.println(coins(3).equals(Set.of(3, 12, 21, 30))); // True
+        System.out.println(coins(4).equals(Set.of(4, 13, 22, 31, 40))); // True
+        System.out.println(coins(10).equals(Set.of(10, 19, 28, 37, 46, 55, 64, 73, 82, 91, 100))); // True
 
-        System.out.println(coins_2(1).equals(Set.of(1, 10)));
-        System.out.println(coins_2(2).equals(Set.of(2, 11, 20)));
-        System.out.println(coins_2(3).equals(Set.of(3, 12, 21, 30)));
-        System.out.println(coins_2(4).equals(Set.of(4, 13, 22, 31, 40)));
-        System.out.println(coins_2(10).equals(Set.of(10, 19, 28, 37, 46, 55, 64, 73, 82, 91, 100)));
+        System.out.println(coins_2(1).equals(Set.of(1, 10))); // True
+        System.out.println(coins_2(2).equals(Set.of(2, 11, 20))); // True
+        System.out.println(coins_2(3).equals(Set.of(3, 12, 21, 30))); // True
+        System.out.println(coins_2(4).equals(Set.of(4, 13, 22, 31, 40))); // True
+        System.out.println(coins_2(10).equals(Set.of(10, 19, 28, 37, 46, 55, 64, 73, 82, 91, 100))); // True
 
         System.out.println("ALL TESTS PASSED!");
     }
