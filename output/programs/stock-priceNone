@@ -3,12 +3,13 @@ public class StockPrice {
 
     // Finds the maximum profit for buying and selling stock within a day.
     public static int getMaxProfit(int[] prices) {
-        // Initialize max_profit with the first possible transaction
+        // Initialize max_profit with the first possible profit
         int maxProfit = prices[1] - prices[0];
 
-        // Iterate over all pairs of prices
-        for (int a = 0; a < prices.length; a++) { // O(n)
-            for (int b = a + 1; b < prices.length; b++) { // O(n)
+        // Iterate through each price
+        for (int a = 0; a < prices.length; a++) {
+            // Compare with every subsequent price
+            for (int b = a + 1; b < prices.length; b++) {
                 int gainLoss = prices[b] - prices[a];
                 if (gainLoss > maxProfit) {
                     maxProfit = gainLoss;
@@ -19,13 +20,13 @@ public class StockPrice {
         return maxProfit;
     }
 
-    // Finds the maximum profit for buying and selling stock within a day (optimized).
+    // Optimized version to find the maximum profit
     public static int getMaxProfitOptimized(int[] prices) {
-        // Initialize max_profit with the first possible transaction
+        // Initialize max_profit with the first possible profit
         int maxProfit = prices[1] - prices[0];
         int low = prices[0];
 
-        // Iterate over prices starting from the second element
+        // Iterate through each price
         for (int i = 1; i < prices.length; i++) {
             int potentialProfit = prices[i] - low;
             maxProfit = Math.max(maxProfit, potentialProfit);
