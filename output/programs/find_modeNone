@@ -6,22 +6,22 @@ public class FindMode {
 
     // Method to find the mode(s) of the array
     public static Set<Integer> findMode(int[] arr) {
-        // If the array is empty, return an empty set
+        // Return an empty set if the array is empty
         if (arr.length == 0) {
             return new HashSet<>();
         }
-        // If the array has only one element, return a set with that element
+        // Return a set with the single element if the array has only one element
         if (arr.length < 2) {
-            Set<Integer> result = new HashSet<>();
-            result.add(arr[0]);
-            return result;
+            Set<Integer> singleElementSet = new HashSet<>();
+            singleElementSet.add(arr[0]);
+            return singleElementSet;
         }
 
         Map<Integer, Integer> nums = new HashMap<>();
         Integer mode = null;
         Set<Integer> n = new HashSet<>();
 
-        // Count the occurrences of each number in the array
+        // Count occurrences of each number in the array
         for (int i : arr) {
             nums.put(i, nums.getOrDefault(i, 0) + 1);
         }
@@ -48,7 +48,4 @@ public class FindMode {
         System.out.println(findMode(new int[]{2, 1, 2, 1})); // [1, 2]
         System.out.println(findMode(new int[]{1, 2, 3, 2, 4})); // [2]
         System.out.println(findMode(new int[]{})); // []
-
-        // Indicate that all tests passed
-        System.out.println("ALL TESTS PASSED!");
     }
