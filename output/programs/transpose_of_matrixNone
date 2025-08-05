@@ -7,27 +7,32 @@ class Matrix {
         this.mat = mat;
     }
 
-    // Method to get the matrix
+    // Method to get the original matrix
     public int[][] getMatrix() {
         return mat;
     }
 
     // Method to transpose the matrix
     public int[][] transpose() {
-        if (mat == null) {
-            return null;
-        }
-        int rowCount = mat.length;
-        int colCount = mat[0].length;
-        int[][] transposed = new int[colCount][rowCount];
-
-        // Transpose logic
-        for (int i = 0; i < rowCount; i++) {
-            for (int j = 0; j < colCount; j++) {
-                transposed[j][i] = mat[i][j];
+        if (mat != null) {
+            try {
+                int rows = mat.length;
+                int cols = mat[0].length;
+                int[][] transposed = new int[cols][rows];
+                
+                // Transpose logic: swap rows with columns
+                for (int i = 0; i < rows; i++) {
+                    for (int j = 0; j < cols; j++) {
+                        transposed[j][i] = mat[i][j];
+                    }
+                }
+                return transposed;
+            } catch (Exception e) {
+                System.out.println("Failed to convert transpose because " + e);
+                return null;
             }
         }
-        return transposed;
+        return null;
     }
 
     public static void main(String[] args) {
@@ -38,16 +43,8 @@ class Matrix {
         };
 
         Matrix matrixObj = new Matrix(mat);
-
-        // Print original matrix
         System.out.println("Original Matrix is : ");
-        for (int[] row : matrixObj.getMatrix()) {
-            System.out.println(Arrays.toString(row));
-        }
-
-        // Print transposed matrix
+        System.out.println(Arrays.deepToString(matrixObj.getMatrix()));
         System.out.println("Transpose of above matrix is : ");
-        for (int[] row : matrixObj.transpose()) {
-            System.out.println(Arrays.toString(row));
-        }
+        System.out.println(Arrays.deepToString(matrixObj.transpose()));
     }
