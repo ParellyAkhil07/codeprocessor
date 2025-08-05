@@ -1,10 +1,1 @@
-
-// Since the original Python code is a string, we will represent it as a Java string.
-public class TaskHandler {
-    public static void main(String[] args) {
-        // Define the string as in the Python code
-        String message = "TRUCK LOADING CONTAINER";
-        
-        // Print the message to the console
-        System.out.println(message);
-    }
+// // TRUCK LOADING CONTAINER
