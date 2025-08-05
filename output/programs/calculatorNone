@@ -1,0 +1,125 @@
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Stack;
+
+public class Calculator {
+
+    // Method to evaluate the expression
+    public static double evaluate(String expression) {
+        expression = expression.replaceAll(" ", "");
+        ArrayList<Character> storage = new ArrayList<>();
+        Stack<Integer> parensIndices = new Stack<>();
+        HashMap<Character, ArrayList<Integer>> operators = new HashMap<>();
+        operators.put('*', new ArrayList<>());
+        operators.put('/', new ArrayList<>());
+        operators.put('+', new ArrayList<>());
+        operators.put('-', new ArrayList<>());
+
+        for (int i = 0; i < expression.length(); i++) {
+            char charAt = expression.charAt(i);
+            if (charAt == '(') {
+                parensIndices.push(i);
+            } else if (charAt == ')') {
+                int start = parensIndices.pop() + 1;
+                double total = calculate(expression.substring(start, i), operators);
+                storage = new ArrayList<>(storage.subList(0, start - 1));
+                for (char c : String.valueOf(total).toCharArray()) {
+                    storage.add(c);
+                }
+            } else {
+                storage.add(charAt);
+            }
+
+            if (operators.containsKey(charAt)) {
+                operators.get(charAt).add(i);
+            }
+        }
+
+        StringBuilder stringExpression = new StringBuilder();
+        for (char c : storage) {
+            stringExpression.append(c);
+        }
+        return calculate(stringExpression.toString(), operators);
+    }
+
+    // Method to calculate the inner expression
+    public static double calculate(String innerExpression, HashMap<Character, ArrayList<Integer>> operators) {
+        double total = 0;
+        operators.put('*', new ArrayList<>());
+        operators.put('/', new ArrayList<>());
+        operators.put('+', new ArrayList<>());
+        operators.put('-', new ArrayList<>());
+        StringBuilder newExpr = new StringBuilder(innerExpression);
+
+        for (int i = 0; i < innerExpression.length(); i++) {
+            char charAt = innerExpression.charAt(i);
+            if (operators.containsKey(charAt)) {
+                operators.get(charAt).add(i);
+            }
+        }
+
+        while (!operators.get('*').isEmpty()) {
+            int opIndex = operators.get('*').remove(operators.get('*').size() - 1);
+            double prev = Character.getNumericValue(newExpr.charAt(opIndex - 1));
+            double nxt = Character.getNumericValue(newExpr.charAt(opIndex + 1));
+            total = prev * nxt;
+            newExpr.replace(opIndex - 1, opIndex + 2, String.valueOf(total));
+        }
+
+        while (!operators.get('/').isEmpty()) {
+            int opIndex = operators.get('/').remove(operators.get('/').size() - 1);
+            double prev = Character.getNumericValue(newExpr.charAt(opIndex - 1));
+            double nxt = Character.getNumericValue(newExpr.charAt(opIndex + 1));
+            total = prev / nxt;
+            newExpr.replace(opIndex - 1, opIndex + 2, String.valueOf(total));
+        }
+
+        while (!operators.get('-').isEmpty()) {
+            int opIndex = operators.get('-').remove(operators.get('-').size() - 1);
+            double prev = Character.getNumericValue(newExpr.charAt(opIndex - 1));
+            double nxt = Character.getNumericValue(newExpr.charAt(opIndex + 1));
+            total = prev - nxt;
+            newExpr.replace(opIndex - 1, opIndex + 2, String.valueOf(total));
+        }
+
+        while (!operators.get('+').isEmpty()) {
+            int opIndex = operators.get('+').remove(operators.get('+').size() - 1);
+            double prev = Character.getNumericValue(newExpr.charAt(opIndex - 1));
+            double nxt = Character.getNumericValue(newExpr.charAt(opIndex + 1));
+            total = prev + nxt;
+            newExpr.replace(opIndex - 1, opIndex + 2, String.valueOf(total));
+        }
+
+        return total;
+    }
+
+    // Unit tests
+    public static class Testing {
+
+        @Test
+        public void testNoParens() {
+            assertEquals(7, evaluate("1 + 3 * 2"), 0.001);
+        }
+
+        @Test
+        public void testSingleParens() {
+            assertEquals(16, evaluate("(1 + 7) * 2"), 0.001);
+        }
+
+        @Test
+        public void testOperationsOrder() {
+            assertEquals(29, evaluate("4 * (1 + 7) - 3"), 0.001);
+        }
+
+        @Test
+        public void testLongParens() {
+            assertEquals(-6, evaluate("(4 - 7 - 1) * 3"), 0.001);
+        }
+
+        @Test
+        public void testDecimals() {
+            assertEquals(6.25, evaluate("(1.2 + 1.3) * 2.5"), 0.001);
+        }
+    }
