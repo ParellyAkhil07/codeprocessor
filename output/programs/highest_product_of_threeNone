@@ -1,17 +1,16 @@
 
 public class HighestProductOfThree {
 
-    // Takes a list of integers and returns the highest product of three of the integers.
-    // The input listOfInts will always have at least three integers.
+    // Method to find the highest product of three integers in a list
     public static int highestProductOfThree(List<Integer> listOfInts) {
-        // Initialize variables
+        // Initializing variables
         int highestProduct = listOfInts.get(0) * listOfInts.get(1) * listOfInts.get(2);
         int highest = listOfInts.get(0);
         int lowest = listOfInts.get(0);
         int highestTwo = listOfInts.get(0) * listOfInts.get(1);
         int lowestTwo = listOfInts.get(0) * listOfInts.get(1);
 
-        // If the list has exactly three integers, return the product of the first three
+        // If the list has exactly three integers, return the product
         if (listOfInts.size() == 3) {
             return highestProduct;
         }
@@ -27,7 +26,7 @@ public class HighestProductOfThree {
                 if (product > highestTwo) {
                     highestTwo = product;
                 }
-            }
+            } 
             // Update lowest and lowestTwo if currentNum is smaller
             else if (currentNum < lowest) {
                 lowest = currentNum;
