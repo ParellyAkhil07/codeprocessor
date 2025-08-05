@@ -3,7 +3,7 @@ public class AnagramOfPalindrome {
 
     // Is the word an anagram of a palindrome?
     public static boolean isAnagramOfPalindrome(String word) {
-        // Create a HashMap to count occurrences of each character
+        // Create a dictionary to count occurrences of each character
         HashMap<Character, Integer> wordDict = new HashMap<>();
 
         // Count each character in the word
@@ -11,7 +11,7 @@ public class AnagramOfPalindrome {
             wordDict.put(l, wordDict.getOrDefault(l, 0) + 1);
         }
 
-        // Check if more than one character has an odd count
+        // Check the number of characters with odd counts
         int oddCount = 0;
         for (int count : wordDict.values()) {
             if (count % 2 != 0) {
@@ -19,8 +19,7 @@ public class AnagramOfPalindrome {
             }
         }
 
-        // If the word length is even, no odd counts are allowed
-        // If the word length is odd, only one odd count is allowed
+        // If more than one character has an odd count, it cannot be an anagram of a palindrome
         return oddCount <= 1;
     }
 
@@ -32,6 +31,6 @@ public class AnagramOfPalindrome {
         System.out.println(isAnagramOfPalindrome("arceace")); // True
         System.out.println(isAnagramOfPalindrome("arceaceb")); // False
 
-        // Print test result
+        // If all tests pass
         System.out.println("ALL TESTS PASSED!");
     }
