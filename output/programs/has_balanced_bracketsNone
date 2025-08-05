@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 
 public class BalancedBrackets {
 
-    // Method to check if the given string has balanced brackets
+    // Method to check if a string has balanced brackets
     public static boolean hasBalancedBrackets(String phrase) {
         // Map to hold matching pairs of brackets
         HashMap<Character, Character> brackets = new HashMap<>();
@@ -14,38 +14,39 @@ public class BalancedBrackets {
         brackets.put('>', '<');
         brackets.put(')', '(');
 
-        // Set of open brackets
+        // Set of opening brackets
         HashSet<Character> openBrackets = new HashSet<>();
         openBrackets.add('[');
         openBrackets.add('{');
         openBrackets.add('<');
         openBrackets.add('(');
 
-        // Set of close brackets
+        // Set of closing brackets
         HashSet<Character> closeBrackets = new HashSet<>();
         closeBrackets.add(']');
         closeBrackets.add('}');
         closeBrackets.add('>');
         closeBrackets.add(')');
 
-        // Stack to keep track of seen open brackets
+        // Stack to keep track of seen opening brackets
         Stack<Character> seen = new Stack<>();
 
         // Iterate over each character in the phrase
         for (char let : phrase.toCharArray()) {
             if (openBrackets.contains(let)) {
-                seen.push(let); // Push open bracket to stack
+                seen.push(let); // Add opening bracket to stack
             }
             if (closeBrackets.contains(let)) {
+                // Check if the stack is not empty and the top of the stack matches the current closing bracket
                 if (!seen.isEmpty() && brackets.get(let) == seen.peek()) {
-                    seen.pop(); // Pop matching open bracket from stack
+                    seen.pop(); // Remove the matching opening bracket from the stack
                 } else {
-                    return false; // Unmatched close bracket
+                    return false; // Unmatched closing bracket
                 }
             }
         }
 
-        // Return true if all open brackets are matched
+        // If stack is empty, all brackets were matched
         return seen.isEmpty();
     }
 
@@ -67,7 +68,6 @@ public class BalancedBrackets {
         }
     }
 
-    // Main method to run the tests
     public static void main(String[] args) {
         org.junit.runner.JUnitCore.main("BalancedBrackets$TestSolutions");
     }
