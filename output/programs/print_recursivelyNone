@@ -11,7 +11,7 @@ public class PrintRecursively {
         // Print the first element of the list
         System.out.println(lst.get(0));
 
-        // Recursive call with the rest of the list
+        // Recursively call the method with the rest of the list
         printRecursively(lst.subList(1, lst.size()));
     }
 
