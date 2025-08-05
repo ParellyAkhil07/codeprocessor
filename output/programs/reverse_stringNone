@@ -1,10 +1,11 @@
-// Can't use built-in reverse methods.
+// Can't use .reverse()
 
 public class ReverseString {
 
-    // Method 1: Using a loop to reverse the string
+    // Method to reverse a string using a loop
     public static String revStr(String string) {
         // Runtime: O(n)
+
         String reversedStr = "";
         char[] listStr = string.toCharArray();
         // ['h', 'e', 'l', 'l', 'o']
@@ -17,34 +18,37 @@ public class ReverseString {
         return reversedStr;
     }
 
-    // Method 2: Using StringBuilder to reverse the string
+    // Method to reverse a string using StringBuilder
     public static String revStr2(String string) {
         // Runtime: O(n)
+
         return new StringBuilder(string).reverse().toString();
     }
 
-    // Method 3: Using recursion to reverse the string
+    // Method to reverse a string using recursion
     public static String revStr3(String string) {
         // Runtime: O(n)
+
         if (string.length() == 0) {
             return string;
         }
+
         return string.charAt(string.length() - 1) + revStr3(string.substring(0, string.length() - 1));
     }
 
     public static void main(String[] args) {
         // Test cases
-        System.out.println(revStr("hello").equals("olleh")); // true
-        System.out.println(revStr("1234h").equals("h4321")); // true
-        System.out.println(revStr("").equals("")); // true
+        assert revStr("hello").equals("olleh");
+        assert revStr("1234h").equals("h4321");
+        assert revStr("").equals("");
 
-        System.out.println(revStr2("hello").equals("olleh")); // true
-        System.out.println(revStr2("1234h").equals("h4321")); // true
-        System.out.println(revStr2("").equals("")); // true
+        assert revStr2("hello").equals("olleh");
+        assert revStr2("1234h").equals("h4321");
+        assert revStr2("").equals("");
 
-        System.out.println(revStr3("hello").equals("olleh")); // true
-        System.out.println(revStr3("1234h").equals("h4321")); // true
-        System.out.println(revStr3("").equals("")); // true
+        assert revStr3("hello").equals("olleh");
+        assert revStr3("1234h").equals("h4321");
+        assert revStr3("").equals("");
 
         System.out.println("ALL TESTS PASSED!");
     }
