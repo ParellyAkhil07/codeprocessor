@@ -1,0 +1,5 @@
+public class Task0 {
+    public static void main(String[] args) {
+        // Output the message "SHIP DOCKING"
+        System.out.println("SHIP DOCKING");
+    }
