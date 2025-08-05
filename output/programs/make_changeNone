@@ -1,19 +1,20 @@
 
 public class MakeChange {
 
-    // Function to compute the number of ways to make the amount with given denominations
+    // Function to compute the number of ways to make the amount of money
+    // with coins of the available denominations.
     public static int makeChange(int amount, List<Integer> denominations, int index) {
-        // Base case: if amount is zero, there's one way to make the change (using no coins)
+        // Base case: If amount is 0, there is one way to make change (using no coins).
         if (amount == 0) {
             return 1;
         }
 
-        // Base case: if amount is negative, there's no way to make the change
+        // If amount is negative, no solution exists.
         if (amount < 0) {
             return 0;
         }
 
-        // Base case: if no more denominations are available, no way to make the change
+        // If no more denominations are available, no solution exists.
         if (index == denominations.size()) {
             return 0;
         }
@@ -21,7 +22,7 @@ public class MakeChange {
         int currentCoin = denominations.get(index);
         int combos = 0;
 
-        // Try using the current coin and reduce the amount accordingly
+        // Try using the current coin and reduce the amount accordingly.
         while (amount >= 0) {
             combos += makeChange(amount, denominations, index + 1);
             amount -= currentCoin;
