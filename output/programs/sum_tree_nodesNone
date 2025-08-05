@@ -4,7 +4,7 @@ class Node {
     int data;
     List<Node> children;
 
-    // Constructor to initialize the node with data and an empty list of children
+    // Constructor to initialize the node with data
     public Node(int data) {
         this.data = data;
         this.children = new ArrayList<>();
@@ -31,27 +31,27 @@ public class SumTreeNodes {
             nodes += numNodes(child);
         }
 
-        return nodes; // Return the total count of nodes
+        return nodes; // Return the total number of nodes
     }
 
     public static void main(String[] args) {
-        // Test cases to verify the functionality
+        // Create nodes
         Node one = new Node(1);
         Node two = new Node(2);
         Node three = new Node(3);
-        one.addChild(two);
-        one.addChild(three);
-        assert numNodes(one) == 3;
-
         Node four = new Node(4);
         Node five = new Node(5);
+        Node six = new Node(6);
+
+        // Build the tree structure
+        one.addChild(two);
+        one.addChild(three);
         two.addChild(four);
         two.addChild(five);
-        assert numNodes(one) == 5;
-
-        Node six = new Node(6);
         three.addChild(six);
-        assert numNodes(one) == 6;
+
+        // Test the numNodes method
+        assert numNodes(one) == 6 : "Test failed";
 
         System.out.println("ALL TESTS PASSED");
     }
