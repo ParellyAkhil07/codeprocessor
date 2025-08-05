@@ -2,7 +2,7 @@ import java.util.List;
 
 public class ProductsOfAllInts {
 
-    // Method to get products of all integers except at index without using division
+    // Takes a list of integers and returns a list of the products except the integer at that index. Do not use division.
     public static List<Integer> getProductsOfAllIntsExceptAtIndex(List<Integer> lst) {
         List<Integer> products = new ArrayList<>();
 
@@ -20,7 +20,7 @@ public class ProductsOfAllInts {
         return products;
     }
 
-    // Optimized method to get products of all integers except at index without using division
+    // Takes a list of integers and returns a list of the products except the integer at that index. Do not use division.
     public static List<Integer> getProductsOfAllIntsExceptAtIndexOptimized(List<Integer> lst) {
         List<Integer> products = new ArrayList<>();
         int product = 1;
@@ -46,13 +46,12 @@ public class ProductsOfAllInts {
     }
 
     public static void main(String[] args) {
-        // Test cases
-        List<Integer> testList1 = List.of(1, 7, 3, 4);
-        List<Integer> testList2 = List.of(1, 0, 3, 4);
+        // Testing
+        List<Integer> lst1 = List.of(1, 7, 3, 4);
+        System.out.println(getProductsOfAllIntsExceptAtIndex(lst1)); // [84, 12, 28, 21]
+        System.out.println(getProductsOfAllIntsExceptAtIndexOptimized(lst1)); // [84, 12, 28, 21]
 
-        System.out.println(getProductsOfAllIntsExceptAtIndex(testList1)); // [84, 12, 28, 21]
-        System.out.println(getProductsOfAllIntsExceptAtIndex(testList2)); // [0, 12, 0, 0]
-
-        System.out.println(getProductsOfAllIntsExceptAtIndexOptimized(testList1)); // [84, 12, 28, 21]
-        System.out.println(getProductsOfAllIntsExceptAtIndexOptimized(testList2)); // [0, 12, 0, 0]
+        List<Integer> lst2 = List.of(1, 0, 3, 4);
+        System.out.println(getProductsOfAllIntsExceptAtIndex(lst2)); // [0, 12, 0, 0]
+        System.out.println(getProductsOfAllIntsExceptAtIndexOptimized(lst2)); // [0, 12, 0, 0]
     }
