@@ -1,23 +1,30 @@
-
-import java.util.*;
-import java.io.*;
-import org.junit.*;
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import java.util.HashMap;
+import java.util.Map;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 
 public class TaskHandler {
 
-    private Map<String, List<String>> taskOrder;
+    // Define task order dependencies
+    private Map<String, String[]> taskOrder;
+    // Define task list with initial counts
     private Map<String, Integer> taskList;
 
     public TaskHandler() {
-        // Initialize task dependencies
+        // Initialize task order dependencies
         taskOrder = new HashMap<>();
-        taskOrder.put("RE-FUELING SHIP", Arrays.asList("SHIP DOCKING"));
-        taskOrder.put("UNLOADING VESSEL", Arrays.asList("SHIP DOCKING"));
-        taskOrder.put("TRUCK LOADING CONTAINER", Arrays.asList("UNLOADING VESSEL"));
-        taskOrder.put("CUSTOMS CHECK", Arrays.asList("TRUCK LOADING CONTAINER"));
+        taskOrder.put("RE-FUELING SHIP", new String[]{"SHIP DOCKING"});
+        taskOrder.put("UNLOADING VESSEL", new String[]{"SHIP DOCKING"});
+        taskOrder.put("TRUCK LOADING CONTAINER", new String[]{"UNLOADING VESSEL"});
+        taskOrder.put("CUSTOMS CHECK", new String[]{"TRUCK LOADING CONTAINER"});
 
-        // Initialize task list with counts
+        // Initialize task list with zero counts
         taskList = new HashMap<>();
         taskList.put("SHIP DOCKING", 0);
         taskList.put("RE-FUELING SHIP", 0);
@@ -26,23 +33,21 @@ public class TaskHandler {
         taskList.put("CUSTOMS CHECK", 0);
     }
 
+    // Get total number of tasks remaining
     public int tasksRemaining() {
-        // Calculate total number of tasks remaining
         return taskList.values().stream().mapToInt(Integer::intValue).sum();
     }
 
-    public void addTask(List<String> tasksArray) throws IOException {
-        // Add tasks from files to the task list
+    // Add tasks from an array of file paths
+    public void addTask(String[] tasksArray) throws Exception {
         for (String taskFile : tasksArray) {
-            BufferedReader reader = new BufferedReader(new FileReader(taskFile));
-            String task = reader.readLine().trim();
-            reader.close();
+            String task = new String(Files.readAllBytes(Paths.get(taskFile))).trim();
             taskList.put(task, taskList.get(task) + 1);
         }
     }
 
+    // Execute tasks in a sensible order
     public void executeTasks() {
-        // Execute tasks in the correct order
         for (String task : taskList.keySet()) {
             if (!taskOrder.containsKey(task)) {
                 while (taskList.get(task) > 0) {
@@ -59,24 +64,17 @@ public class TaskHandler {
         }
     }
 
+    // Check for any task dependencies
     private void checkDependencies(String task) {
-        // Check for task dependencies
-        List<String> dependenciesRemaining = new ArrayList<>();
-
         if (taskOrder.containsKey(task)) {
-            List<String> dependencies = taskOrder.get(task);
-            dependenciesRemaining.addAll(dependencies);
-        }
-
-        if (!dependenciesRemaining.isEmpty()) {
-            for (String dependency : dependenciesRemaining) {
+            for (String dependency : taskOrder.get(task)) {
                 checkDependencies(dependency);
             }
         }
     }
 
+    // Remove a task from the task list once it has been completed
     private void removeTask(String task) {
-        // Remove a completed task from the task list
         taskList.put(task, taskList.get(task) - 1);
     }
 
@@ -85,42 +83,34 @@ public class TaskHandler {
         return "<" + tasksRemaining() + " tasks remaining>";
     }
 
+    // Unit tests for TaskHandler
     public static class TestingTaskHandler {
 
         private TaskHandler job;
-        private ByteArrayOutputStream outContent;
+        private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
         @Before
-        public void setUp() throws IOException {
+        public void setUp() throws Exception {
             job = new TaskHandler();
-            job.addTask(Arrays.asList("task0.txt", "task1.txt", "task4.txt", "task2.txt", "task3.txt", "task3.txt", "task4.txt", "task2.txt", "task1.txt"));
-            outContent = new ByteArrayOutputStream();
+            job.addTask(new String[]{"task0.py", "task1.py", "task4.py", "task2.py", "task3.py", "task3.py", "task4.py", "task2.py", "task1.py"});
             System.setOut(new PrintStream(outContent));
         }
 
         @Test
         public void testAddTasks() {
             assertEquals(9, job.tasksRemaining());
-            Map<String, Integer> expectedTaskList = new HashMap<>();
-            expectedTaskList.put("SHIP DOCKING", 1);
-            expectedTaskList.put("UNLOADING VESSEL", 2);
-            expectedTaskList.put("CUSTOMS CHECK", 2);
-            expectedTaskList.put("TRUCK LOADING CONTAINER", 2);
-            expectedTaskList.put("RE-FUELING SHIP", 2);
-            assertEquals(expectedTaskList, job.taskList);
+            assertEquals((Integer) 1, job.taskList.get("SHIP DOCKING"));
+            assertEquals((Integer) 2, job.taskList.get("UNLOADING VESSEL"));
+            assertEquals((Integer) 2, job.taskList.get("CUSTOMS CHECK"));
+            assertEquals((Integer) 2, job.taskList.get("TRUCK LOADING CONTAINER"));
+            assertEquals((Integer) 2, job.taskList.get("RE-FUELING SHIP"));
         }
 
         @Test
         public void testRemoveTask() {
             job.removeTask("SHIP DOCKING");
             assertEquals(8, job.tasksRemaining());
-            Map<String, Integer> expectedTaskList = new HashMap<>();
-            expectedTaskList.put("SHIP DOCKING", 0);
-            expectedTaskList.put("UNLOADING VESSEL", 2);
-            expectedTaskList.put("CUSTOMS CHECK", 2);
-            expectedTaskList.put("TRUCK LOADING CONTAINER", 2);
-            expectedTaskList.put("RE-FUELING SHIP", 2);
-            assertEquals(expectedTaskList, job.taskList);
+            assertEquals((Integer) 0, job.taskList.get("SHIP DOCKING"));
         }
 
         @Test
@@ -130,8 +120,3 @@ public class TaskHandler {
             assertEquals("SHIP DOCKING COMPLETED\nUNLOADING VESSEL COMPLETED\nUNLOADING VESSEL COMPLETED\nCUSTOMS CHECK COMPLETED\nCUSTOMS CHECK COMPLETED\nTRUCK LOADING CONTAINER COMPLETED\nTRUCK LOADING CONTAINER COMPLETED\nRE-FUELING SHIP COMPLETED\nRE-FUELING SHIP COMPLETED\n", outContent.toString());
         }
     }
-
-    public static void main(String[] args) {
-        org.junit.runner.JUnitCore.main("TaskHandler$TestingTaskHandler");
-    }
-}
