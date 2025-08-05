@@ -3,52 +3,46 @@ public class RecursiveIndex {
 
     // Method to find the index of needle in haystack using recursion
     public static Integer recursiveIndex(String needle, List<String> haystack) {
-        // Base case: if haystack is empty or needle is not in haystack, return null
+        // Base case: if haystack is empty or needle is not present
         if (haystack.isEmpty() || !haystack.contains(needle)) {
             return null;
         }
 
-        // Recursive case: check if the first element is the needle
+        // Check if the first element is the needle
         if (needle.equals(haystack.get(0))) {
             return 0;
         }
 
         // Recursive call with the rest of the list
         Integer result = recursiveIndex(needle, haystack.subList(1, haystack.size()));
-
-        // If result is null, needle is not found
-        if (result == null) {
-            return null;
-        }
-
-        // Return the index by adding 1 to the result
-        return 1 + result;
+        return (result == null) ? null : 1 + result;
     }
 
-    // Another recursive method to find the index of needle in haystack
+    // Another method to find the index of needle in haystack using recursion
     public static Integer recursiveIndex2(String needle, List<String> haystack) {
-        // Base case: if haystack is empty or needle is not in haystack, return null
+        // Base case: if haystack is empty or needle is not present
         if (haystack.isEmpty() || !haystack.contains(needle)) {
             return null;
         }
 
-        // Recursive case: check if the first element is the needle
+        // Check if the first element is the needle
         if (needle.equals(haystack.get(0))) {
             return 0;
         } else {
             // Recursive call with the rest of the list
-            return 1 + recursiveIndex2(needle, haystack.subList(1, haystack.size()));
+            Integer result = recursiveIndex2(needle, haystack.subList(1, haystack.size()));
+            return (result == null) ? null : 1 + result;
         }
     }
 
-    // Third recursive method using a helper function
+    // Another method using a helper function to find the index of needle in haystack
     public static Integer recursiveIndex3(String needle, List<String> haystack) {
         return _recursiveIndex3(needle, haystack, 0);
     }
 
-    // Helper function for recursiveIndex3
+    // Helper method for recursiveIndex3
     private static Integer _recursiveIndex3(String needle, List<String> haystack, int count) {
-        // Base case: if count reaches the length of haystack, return null
+        // Base case: if count reaches the size of haystack
         if (count == haystack.size()) {
             return null;
         }
@@ -58,7 +52,7 @@ public class RecursiveIndex {
             return count;
         }
 
-        // Recursive call with incremented count
+        // Recursive call with the next index
         return _recursiveIndex3(needle, haystack, count + 1);
     }
 
