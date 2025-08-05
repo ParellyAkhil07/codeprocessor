@@ -1,0 +1,45 @@
+
+public class MostFrequentWord {
+
+    // Find k most frequent words in a string of words, and print them in space-separated alphabetical order.
+    public static void mostFrequentWord(String str) {
+        // Create a map to store word frequencies
+        Map<String, Integer> words = new HashMap<>();
+        String[] listOfWords = str.split(" ");
+
+        // Count the frequency of each word
+        for (String word : listOfWords) {
+            words.put(word, words.getOrDefault(word, 0) + 1);
+        }
+
+        // Find the maximum frequency
+        int maxValue = Collections.max(words.values());
+
+        // List to store the most frequent words
+        List<String> mostFrequentWords = new ArrayList<>();
+
+        // Collect words with the maximum frequency
+        for (Map.Entry<String, Integer> entry : words.entrySet()) {
+            if (entry.getValue() == maxValue) {
+                mostFrequentWords.add(entry.getKey());
+            }
+        }
+
+        // Sort the most frequent words alphabetically
+        Collections.sort(mostFrequentWords);
+
+        // Print the sorted words
+        for (String word : mostFrequentWords) {
+            System.out.print(word + " ");
+        }
+    }
+
+    public static void main(String[] args) {
+        // Test cases
+        mostFrequentWord("hello my name is hello joanne");
+        System.out.println();
+        mostFrequentWord("hello my name is hello joanne is");
+        System.out.println();
+        mostFrequentWord("hello my name is joanne");
+        System.out.println();
+    }
