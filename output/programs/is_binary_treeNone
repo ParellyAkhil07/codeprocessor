@@ -1,7 +1,7 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-// Define the Node class to represent each node in the binary tree
+// Node class representing each node in the binary tree
 class Node {
     int data;
     Node left;
@@ -15,15 +15,15 @@ class Node {
     }
 }
 
-// Main class to check if a binary tree is a binary search tree
+// Main class containing the method to check if a tree is a BST
 public class BinaryTree {
 
-    // Method to check if the binary tree is a binary search tree
+    // Method to check if the tree is a binary search tree
     public static boolean isBST(Node root) {
         return isBSTRecursive(root, null, null);
     }
 
-    // Helper recursive method to validate the binary search tree properties
+    // Helper recursive method to validate the BST property
     private static boolean isBSTRecursive(Node root, Integer smallest, Integer largest) {
         if (root == null) {
             return true;
@@ -48,7 +48,7 @@ public class BinaryTree {
         return true;
     }
 
-    // Unit tests for the BinaryTree class
+    // Unit tests for the isBST method
     public static class Tests {
 
         // Helper method to create a non-BST
@@ -61,7 +61,7 @@ public class BinaryTree {
             return new Node(5, new Node(3, new Node(1), new Node(4)), new Node(7, new Node(6), new Node(8)));
         }
 
-        // Test method to validate the isBST method
+        // Test method to check the isBST functionality
         @Test
         public void testIsBST() {
             assertFalse(BinaryTree.isBST(createBST1()));
