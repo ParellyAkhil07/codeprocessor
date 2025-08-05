@@ -3,7 +3,7 @@ public class MostFrequentWord {
 
     // Find k most frequent words in a string of words, and print them in space-separated alphabetical order.
     public static void mostFrequentWord(String str) {
-        // Create a map to store word frequencies
+        // Create a map to store the frequency of each word
         Map<String, Integer> words = new HashMap<>();
         String[] listOfWords = str.split(" ");
 
@@ -12,11 +12,10 @@ public class MostFrequentWord {
             words.put(word, words.getOrDefault(word, 0) + 1);
         }
 
-        // Find the maximum frequency
-        int maxValue = Collections.max(words.values());
-
-        // List to store the most frequent words
         List<String> mostFrequentWords = new ArrayList<>();
+
+        // Find the maximum frequency value
+        int maxValue = Collections.max(words.values());
 
         // Collect words with the maximum frequency
         for (Map.Entry<String, Integer> entry : words.entrySet()) {
@@ -25,10 +24,8 @@ public class MostFrequentWord {
             }
         }
 
-        // Sort the most frequent words alphabetically
+        // Sort the most frequent words alphabetically and print them
         Collections.sort(mostFrequentWords);
-
-        // Print the sorted words
         for (String word : mostFrequentWords) {
             System.out.print(word + " ");
         }
@@ -37,9 +34,11 @@ public class MostFrequentWord {
     public static void main(String[] args) {
         // Test cases
         mostFrequentWord("hello my name is hello joanne");
-        System.out.println();
+        System.out.println(); // Output: hello
+
         mostFrequentWord("hello my name is hello joanne is");
-        System.out.println();
+        System.out.println(); // Output: hello is
+
         mostFrequentWord("hello my name is joanne");
-        System.out.println();
+        System.out.println(); // Output: hello is joanne my name
     }
