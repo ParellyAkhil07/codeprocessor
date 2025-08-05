@@ -1,37 +1,35 @@
 import java.util.List;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 class MinHeap {
+
     private List<Integer> storage;
 
     public MinHeap() {
         this.storage = new ArrayList<>();
     }
 
-    // Swap elements at indices a and b
     private void swap(int a, int b) {
         int temp = storage.get(a);
         storage.set(a, storage.get(b));
         storage.set(b, temp);
     }
 
-    // Return the size of the heap
     public int size() {
         return storage.size();
     }
 
-    // Return the minimum element (peak) of the heap
     public int peak() {
         return storage.get(0);
     }
 
-    // Insert a new value into the heap
     public void insert(int value) {
         storage.add(value);
         int index = size() - 1;
         bubbleUp(index);
     }
 
-    // Get the parent index of a given child index
     private int getParent(int child) {
         if (child % 2 == 0) {
             return (child - 2) / 2;
@@ -40,7 +38,6 @@ class MinHeap {
         }
     }
 
-    // Bubble up the element at the given child index
     private void bubbleUp(int child) {
         int parent = getParent(child);
 
@@ -51,7 +48,6 @@ class MinHeap {
         }
     }
 
-    // Remove and return the minimum element (peak) of the heap
     public int removePeak() {
         swap(0, size() - 1);
         int minElem = storage.remove(size() - 1);
@@ -59,7 +55,6 @@ class MinHeap {
         return minElem;
     }
 
-    // Get the child index of a given parent index
     private Integer getChild(int parent) {
         int child1 = 2 * parent + 1;
         int child2 = 2 * parent + 2;
@@ -75,7 +70,6 @@ class MinHeap {
         }
     }
 
-    // Bubble down the element at the given parent index
     private void bubbleDown(int parent) {
         Integer child = getChild(parent);
 
@@ -86,7 +80,6 @@ class MinHeap {
         }
     }
 
-    // Remove a specific item from the heap
     public int remove(int item) {
         int lastIndex = size() - 1;
         int swapIndex = 0;
@@ -95,7 +88,6 @@ class MinHeap {
             if (item == storage.get(i)) {
                 swapIndex = i;
                 swap(i, lastIndex);
-                break;
             }
         }
 
@@ -109,17 +101,106 @@ class MinHeap {
     public String toString() {
         return "<storage = " + storage + ">";
     }
+}
 
-    public static void main(String[] args) {
-        // Example usage and testing
-        MinHeap heap = new MinHeap();
-        heap.insert(4);
-        heap.insert(5);
-        heap.insert(6);
-        heap.insert(7);
-        heap.insert(8);
+public class Testing {
 
-        System.out.println(heap); // <storage = [4, 5, 6, 7, 8]>
-        System.out.println(heap.removePeak()); // 4
-        System.out.println(heap); // <storage = [5, 7, 6, 8]>
+    private MinHeap test;
+
+    @org.junit.Before
+    public void setUp() {
+        test = new MinHeap();
+        test.insert(4);
+        test.insert(5);
+        test.insert(6);
+        test.insert(7);
+        test.insert(8);
+    }
+
+    @Test
+    public void testSwap() {
+        test.swap(0, 3);
+        assertEquals("<storage = [7, 5, 6, 4, 8]>", test.toString());
+    }
+
+    @Test
+    public void testSize() {
+        assertEquals(5, test.size());
+    }
+
+    @Test
+    public void testPeak() {
+        assertEquals(4, test.peak());
+    }
+
+    @Test
+    public void testInsert() {
+        test = new MinHeap();
+        test.insert(7);
+        test.insert(4);
+        test.insert(10);
+        test.insert(1);
+        test.insert(8);
+        test.insert(11);
+        test.insert(9);
+        test.insert(2);
+        assertEquals("<storage = [1, 2, 9, 4, 8, 11, 10, 7]>", test.toString());
+    }
+
+    @Test
+    public void testGetParent() {
+        assertEquals(3, test.getParent(7));
+    }
+
+    @Test
+    public void testBubbleUp() {
+        test.insert(1);
+        assertEquals("<storage = [1, 5, 4, 7, 8, 6]>", test.toString());
+        test.insert(10);
+        assertEquals("<storage = [1, 5, 4, 7, 8, 6, 10]>", test.toString());
+        test.insert(2);
+        assertEquals("<storage = [1, 2, 4, 5, 8, 6, 10, 7]>", test.toString());
+        test.insert(9);
+        assertEquals("<storage = [1, 2, 4, 5, 8, 6, 10, 7, 9]>", test.toString());
+    }
+
+    @Test
+    public void testRemovePeak() {
+        test = new MinHeap();
+        test.insert(1);
+        test.insert(2);
+        test.insert(4);
+        test.insert(11);
+        assertEquals(1, test.removePeak());
+        assertEquals(2, test.removePeak());
+        assertEquals(4, test.removePeak());
+        assertEquals(11, test.removePeak());
+    }
+
+    @Test
+    public void testGetChild() {
+        assertEquals((Integer) 1, test.getChild(0));
+    }
+
+    @Test
+    public void testBubbleDown() {
+        test = new MinHeap();
+        test.insert(1);
+        test.insert(2);
+        test.insert(4);
+        test.insert(11);
+        test.removePeak();
+        assertEquals("<storage = [2, 11, 4]>", test.toString());
+        test.removePeak();
+        assertEquals("<storage = [4, 11]>", test.toString());
+        test.removePeak();
+        assertEquals("<storage = [11]>", test.toString());
+        test.removePeak();
+        assertEquals("<storage = []>", test.toString());
+    }
+
+    @Test
+    public void testRemove() {
+        assertEquals(8, test.remove(8));
+        assertEquals("<storage = [4, 5, 6, 7]>", test.toString());
     }
