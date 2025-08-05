@@ -1,18 +1,8 @@
 
-// Class representing a refueling ship
+// Since the original Python code is not provided, 
+// this is a placeholder for the Java implementation.
 public class RefuelingShip {
-
-    // Method to initiate refueling
-    public void refuel() {
-        // Logic for refueling the ship
-        System.out.println("Refueling the ship...");
-    }
-
-    // Main method to run the refueling process
     public static void main(String[] args) {
-        // Create an instance of RefuelingShip
-        RefuelingShip ship = new RefuelingShip();
-        
-        // Call the refuel method
-        ship.refuel();
+        // Placeholder for the main logic of the refueling ship task
+        System.out.println("RE-FUELING SHIP");
     }
