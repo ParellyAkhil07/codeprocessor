@@ -1,0 +1,116 @@
+class Node {
+    String data;
+    Node next;
+
+    // Constructor to initialize a node with data
+    public Node(String data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+// Queue class using a linked list
+class Queue {
+    private Node head;
+    private Node tail;
+
+    // Constructor to initialize an empty queue
+    public Queue() {
+        this.head = null;
+        this.tail = null;
+    }
+
+    // Method to get the string representation of the queue
+    @Override
+    public String toString() {
+        if (this.length() == 0) {
+            return "<Queue (empty)>";
+        } else {
+            return "<Queue " + this.head.data + ">";
+        }
+    }
+
+    // Method to get the length of the queue
+    public int length() {
+        Node curr = this.head;
+        int length = 0;
+
+        while (curr != null) {
+            length++;
+            curr = curr.next;
+        }
+
+        return length;
+    }
+
+    // Method to add an item to the end of the queue
+    public void enqueue(String item) {
+        Node newNode = new Node(item);
+
+        if (this.head == null && this.tail == null) {
+            this.head = newNode;
+            this.tail = newNode;
+        } else {
+            this.tail.next = newNode;
+            this.tail = newNode;
+        }
+    }
+
+    // Method to remove and return the item from the front of the queue
+    public String dequeue() {
+        if (this.head == null) {
+            return null;
+        } else {
+            String dequeued = this.head.data;
+            this.head = this.head.next;
+            return dequeued;
+        }
+    }
+
+    // Method to check if the queue is empty
+    public boolean isEmpty() {
+        return this.head == null;
+    }
+
+    // Method to return but not remove the first item in the queue
+    public String peek() {
+        return (this.head != null) ? this.head.data : null;
+    }
+
+    // Method to print items in the queue as a list
+    public String[] printQueue() {
+        Node curr = this.head;
+        if (curr == null) {
+            return new String[0];
+        }
+
+        int length = this.length();
+        String[] queue = new String[length];
+        int index = 0;
+
+        while (curr != null) {
+            queue[index++] = curr.data;
+            curr = curr.next;
+        }
+
+        return queue;
+    }
+
+    // Main method to run tests
+    public static void main(String[] args) {
+        Queue q = new Queue();
+        q.enqueue("buy flight");
+        q.enqueue("pack");
+        q.enqueue("enjoy vacation");
+
+        System.out.println(java.util.Arrays.toString(q.printQueue())); // ['buy flight', 'pack', 'enjoy vacation']
+        System.out.println(q.length()); // 3
+        System.out.println(q.dequeue()); // 'buy flight'
+        System.out.println(java.util.Arrays.toString(q.printQueue())); // ['pack', 'enjoy vacation']
+        System.out.println(q.isEmpty()); // false
+        System.out.println(q.peek()); // 'pack'
+
+        Queue q2 = new Queue();
+        System.out.println(q2.isEmpty()); // true
+        System.out.println(q2.dequeue()); // null
+    }
