@@ -1,25 +1,33 @@
 
 public class NonNegIntFinder {
 
-    // Method to find a non-negative integer not present in the array
+    // Takes an array and returns a non-negative integer that is not in the original array.
+    // Returns null if all integers are in the array.
+    // Runtime: O(n)
+    // Spacetime: O(n)
+
     public static Integer findInt(int[] arr) {
-        // Create a HashSet to store the integers from the array for O(1) lookup
         HashSet<Integer> arrSet = new HashSet<>();
 
-        // Add all elements of the array to the HashSet
+        // If the length of the array is equal to the maximum allowed integers, there are no missing integers in the array.
+        if (arr.length == Integer.MAX_VALUE) {
+            return null;
+        }
+
+        // Create an O(1) lookup hashtable using the integers from the array as the key
         for (int num : arr) {
             arrSet.add(num);
         }
 
-        // Loop through the numbers from 0 to the length of the array
-        // and find the first missing integer
+        // Loop through the length of the array + 1 and check if the number is a key in the hashtable.
+        // If it isn't, return that number.
         for (int i = 0; i <= arr.length; i++) {
             if (!arrSet.contains(i)) {
-                return i; // Return the first missing integer
+                return i;
             }
         }
 
-        return null; // Return null if all integers are present
+        return null;
     }
 
     public static void main(String[] args) {
