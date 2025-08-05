@@ -1,30 +1,28 @@
 
-// Node class to create a node
 class Node {
+    // Creates a node
     int data;
     Node next;
 
-    // Constructor to initialize a node
-    public Node(int data) {
+    Node(int data, Node nxt) {
         this.data = data;
-        this.next = null;
+        this.next = nxt;
     }
 }
 
-// LinkedList class to create a linked list
 class LinkedList {
-    Node head;
-    Node tail;
+    // Creates a linked list
+    private Node head;
+    private Node tail;
 
-    // Constructor to initialize the linked list
-    public LinkedList() {
-        this.head = null;
-        this.tail = null;
+    LinkedList(Node head) {
+        this.head = head;
+        this.tail = head;
     }
 
-    // Method to insert a node at a given position
     public void insert(int data, int position) {
-        Node newNode = new Node(data);
+        // Takes data as an input and a position and adds it to the linked list as a node before that position
+        Node newNode = new Node(data, null);
 
         if (position == 0) {
             newNode.next = head;
@@ -40,9 +38,6 @@ class LinkedList {
                 tail.next = newNode;
             }
             tail = newNode;
-            if (head == null) {
-                head = newNode;
-            }
             return;
         }
 
@@ -52,7 +47,9 @@ class LinkedList {
 
         while (curr != null) {
             if (position == index) {
-                prev.next = newNode;
+                if (prev != null) {
+                    prev.next = newNode;
+                }
                 newNode.next = curr;
                 return;
             }
@@ -62,9 +59,14 @@ class LinkedList {
         }
     }
 
-    // Method to return the size of the linked list
     public int size() {
+        // Returns the length of the linked list
         int size = 0;
+
+        if (head == null && tail == null) {
+            return size;
+        }
+
         Node curr = head;
 
         while (curr != null) {
@@ -75,8 +77,8 @@ class LinkedList {
         return size;
     }
 
-    // Method to search for a node with given data
     public Node search(int data) {
+        // Takes data as an input and returns the node holding the data
         Node curr = head;
 
         while (curr != null) {
@@ -89,8 +91,8 @@ class LinkedList {
         throw new IllegalArgumentException("Data not in linked list.");
     }
 
-    // Method to delete a node with given data
     public void delete(int data) {
+        // Takes data as an input and deletes the node with that data
         Node prev = null;
         Node curr = head;
 
@@ -99,7 +101,9 @@ class LinkedList {
                 if (curr == head) {
                     head = curr.next;
                 } else {
-                    prev.next = curr.next;
+                    if (prev != null) {
+                        prev.next = curr.next;
+                    }
                 }
                 if (curr == tail) {
                     tail = prev;
