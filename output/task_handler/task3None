@@ -1,4 +1,1 @@
-public class CustomsCheck {
-    public static void main(String[] args) {
-        System.out.println("CUSTOMS CHECK");
-    }
+# Transformation failed or returned empty response.
