@@ -23,15 +23,20 @@ public class FindMatches {
         }
 
         this.inputFile = inputFile;
-
-        // Read the CSV file
         List<String> lines = Files.readAllLines(Paths.get(this.inputFile), StandardCharsets.UTF_8);
-        if (!lines.isEmpty()) {
-            this.header = Arrays.asList(lines.get(0).split(","));
-            this.rownum++;
+        List<List<String>> rows = new ArrayList<>();
+        for (String line : lines) {
+            rows.add(Arrays.asList(line.split(",")));
         }
 
-        // Get the column number(s) for email
+        for (List<String> row : rows) {
+            if (this.rownum == 0) {
+                this.header = row;
+                this.rownum++;
+                break;
+            }
+        }
+
         for (int col = 0; col < this.header.size(); col++) {
             if (this.header.get(col).toLowerCase().contains("email2")) {
                 this.emailCol2 = col;
@@ -41,7 +46,6 @@ public class FindMatches {
             }
         }
 
-        // Get the column number(s) for phone
         for (int col = 0; col < this.header.size(); col++) {
             if (this.header.get(col).toLowerCase().contains("phone2")) {
                 this.phoneCol2 = col;
@@ -51,8 +55,7 @@ public class FindMatches {
             }
         }
 
-        // Write to CSV after all ids are assigned
-        this.writeCsv(lines);
+        writeCsv(rows);
     }
 
     private int emailMatch(List<String> row, Integer minId) {
@@ -61,15 +64,15 @@ public class FindMatches {
 
         if (this.emailCol2 != null && !row.get(this.emailCol2).isEmpty()) {
             String email2 = row.get(this.emailCol2);
-            this.addKeyToDict(email2, iden);
+            addKeyToDict(email2, iden);
             if (this.ids.containsKey(email2)) {
                 rowId = this.ids.get(email2);
             }
         }
 
-        if (this.emailCol != null && !row.get(this.emailCol).isEmpty()) {
+        if (!row.get(this.emailCol).isEmpty()) {
             String email1 = row.get(this.emailCol);
-            this.addKeyToDict(email1, iden);
+            addKeyToDict(email1, iden);
             rowId = this.ids.getOrDefault(email1, this.id);
         }
 
@@ -81,11 +84,11 @@ public class FindMatches {
     }
 
     private String formatPhone(List<String> row, int column) {
-        String formatPhoneCol = row.get(column).replaceAll("\\D+", "");
-        if (formatPhoneCol.length() > 10) {
-            formatPhoneCol = formatPhoneCol.substring(1);
+        String formattedPhone = row.get(column).replaceAll("\\D+", "");
+        if (formattedPhone.length() > 10) {
+            formattedPhone = formattedPhone.substring(1);
         }
-        return formatPhoneCol;
+        return formattedPhone;
     }
 
     private int phoneMatch(List<String> row, Integer minId) {
@@ -93,16 +96,16 @@ public class FindMatches {
         int iden = (minId != null) ? minId : this.id;
 
         if (this.phoneCol2 != null && !row.get(this.phoneCol2).isEmpty()) {
-            String idsKey = this.formatPhone(row, this.phoneCol2);
-            this.addKeyToDict(idsKey, iden);
+            String idsKey = formatPhone(row, this.phoneCol2);
+            addKeyToDict(idsKey, iden);
             if (this.ids.containsKey(idsKey)) {
                 rowId = this.ids.get(idsKey);
             }
         }
 
-        if (this.phoneCol != null && !row.get(this.phoneCol).isEmpty()) {
-            String idsKey = this.formatPhone(row, this.phoneCol);
-            this.addKeyToDict(idsKey, iden);
+        if (!row.get(this.phoneCol).isEmpty()) {
+            String idsKey = formatPhone(row, this.phoneCol);
+            addKeyToDict(idsKey, iden);
             rowId = this.ids.getOrDefault(idsKey, this.id);
         }
 
@@ -117,65 +120,103 @@ public class FindMatches {
         this.ids.putIfAbsent(idsKey, iden);
     }
 
-    private void writeCsv(List<String> lines) throws IOException {
-        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get("output_file.csv"), StandardCharsets.UTF_8)) {
-            // Add 'id' column to header
-            List<String> newHeader = new ArrayList<>(this.header);
-            newHeader.add(0, "id");
-            writer.write(String.join(",", newHeader));
-            writer.newLine();
+    private void writeCsv(List<List<String>> rows) throws IOException {
+        BufferedWriter writer = Files.newBufferedWriter(Paths.get("output_file.csv"), StandardCharsets.UTF_8);
+        List<String> newHeader = new ArrayList<>(this.header);
+        newHeader.add(0, "id");
+        writer.write(String.join(",", newHeader) + "\n");
 
-            for (int i = 1; i < lines.size(); i++) {
-                List<String> row = Arrays.asList(lines.get(i).split(","));
-                Integer rowId = null;
-                Integer emailRowId = null;
-                Integer phoneRowId = null;
+        for (List<String> row : rows) {
+            Integer rowId = null;
+            Integer emailRowId = null;
+            Integer phoneRowId = null;
 
-                if (this.matchingType.equals("email")) {
-                    Integer minId = null;
-                    if (this.emailCol2 != null && this.ids.containsKey(row.get(this.emailCol2))) {
-                        minId = this.ids.get(row.get(this.emailCol2));
-                    }
-                    if (this.emailCol != null && this.ids.containsKey(row.get(this.emailCol))) {
-                        minId = (minId == null) ? this.ids.get(row.get(this.emailCol)) : Math.min(minId, this.ids.get(row.get(this.emailCol)));
-                    }
-                    rowId = this.emailMatch(row, minId);
-                } else if (this.matchingType.equals("phone")) {
-                    Integer minId = null;
-                    if (this.phoneCol2 != null && this.ids.containsKey(this.formatPhone(row, this.phoneCol2))) {
-                        minId = this.ids.get(this.formatPhone(row, this.phoneCol2));
-                    }
-                    if (this.phoneCol != null && this.ids.containsKey(this.formatPhone(row, this.phoneCol))) {
-                        minId = (minId == null) ? this.ids.get(this.formatPhone(row, this.phoneCol)) : Math.min(minId, this.ids.get(this.formatPhone(row, this.phoneCol)));
-                    }
-                    rowId = this.phoneMatch(row, minId);
-                } else if (this.matchingType.equals("email_phone")) {
-                    Integer minId = null;
-                    if (this.emailCol2 != null && this.ids.containsKey(row.get(this.emailCol2))) {
-                        minId = this.ids.get(row.get(this.emailCol2));
-                    }
-                    if (this.emailCol != null && this.ids.containsKey(row.get(this.emailCol))) {
-                        minId = (minId == null) ? this.ids.get(row.get(this.emailCol)) : Math.min(minId, this.ids.get(row.get(this.emailCol)));
-                    }
-                    if (this.phoneCol2 != null && this.ids.containsKey(this.formatPhone(row, this.phoneCol2))) {
-                        minId = (minId == null) ? this.ids.get(this.formatPhone(row, this.phoneCol2)) : Math.min(minId, this.ids.get(this.formatPhone(row, this.phoneCol2)));
-                    }
-                    if (this.phoneCol != null && this.ids.containsKey(this.formatPhone(row, this.phoneCol))) {
-                        minId = (minId == null) ? this.ids.get(this.formatPhone(row, this.phoneCol)) : Math.min(minId, this.ids.get(this.formatPhone(row, this.phoneCol)));
-                    }
-                    emailRowId = this.emailMatch(row, minId);
-                    phoneRowId = this.phoneMatch(row, minId);
-                    rowId = (emailRowId < phoneRowId) ? emailRowId : phoneRowId;
+            if (this.matchingType.equals("email")) {
+                String email2 = null;
+                String email1 = null;
+                Integer minId = null;
+
+                if (this.emailCol2 != null) {
+                    email2 = row.get(this.emailCol2);
+                }
+                if (this.emailCol != null) {
+                    email1 = row.get(this.emailCol);
                 }
 
-                List<String> newRow = new ArrayList<>(row);
-                newRow.add(0, rowId.toString());
-                writer.write(String.join(",", newRow));
-                writer.newLine();
+                if (this.ids.containsKey(email2) || this.ids.containsKey(email1)) {
+                    Integer email2Exists = this.ids.get(email2);
+                    Integer emailExists = this.ids.get(email1);
+                    List<Integer> idValues = Arrays.asList(email2Exists, emailExists);
+                    minId = idValues.stream().filter(Objects::nonNull).min(Integer::compare).orElse(null);
+                }
 
-                this.id++;
+                rowId = emailMatch(row, minId);
+
+            } else if (this.matchingType.equals("phone")) {
+                String phone2 = null;
+                String phone1 = null;
+                Integer minId = null;
+
+                if (this.phoneCol2 != null) {
+                    phone2 = formatPhone(row, this.phoneCol2);
+                }
+                if (this.phoneCol != null) {
+                    phone1 = formatPhone(row, this.phoneCol);
+                }
+
+                if (this.ids.containsKey(phone2) || this.ids.containsKey(phone1)) {
+                    Integer phone2Exists = this.ids.get(phone2);
+                    Integer phoneExists = this.ids.get(phone1);
+                    List<Integer> idValues = Arrays.asList(phone2Exists, phoneExists);
+                    minId = idValues.stream().filter(Objects::nonNull).min(Integer::compare).orElse(null);
+                }
+
+                rowId = phoneMatch(row, minId);
+
+            } else if (this.matchingType.equals("email_phone")) {
+                String email2 = null;
+                String email1 = null;
+                String phone2 = null;
+                String phone1 = null;
+                Integer minId = null;
+
+                if (this.emailCol2 != null) {
+                    email2 = row.get(this.emailCol2);
+                }
+                if (this.emailCol != null) {
+                    email1 = row.get(this.emailCol);
+                }
+                if (this.phoneCol2 != null) {
+                    phone2 = formatPhone(row, this.phoneCol2);
+                }
+                if (this.phoneCol != null) {
+                    phone1 = formatPhone(row, this.phoneCol);
+                }
+
+                if (this.ids.containsKey(email2) || this.ids.containsKey(email1) || this.ids.containsKey(phone2) || this.ids.containsKey(phone1)) {
+                    Integer email2Exists = this.ids.get(email2);
+                    Integer emailExists = this.ids.get(email1);
+                    Integer phone2Exists = this.ids.get(phone2);
+                    Integer phoneExists = this.ids.get(phone1);
+                    List<Integer> idValues = Arrays.asList(email2Exists, emailExists, phone2Exists, phoneExists);
+                    minId = idValues.stream().filter(Objects::nonNull).min(Integer::compare).orElse(null);
+                    rowId = minId;
+                }
+
+                emailRowId = emailMatch(row, minId);
+                phoneRowId = phoneMatch(row, minId);
+
+                rowId = (emailRowId < phoneRowId) ? emailRowId : phoneRowId;
             }
+
+            List<String> newRow = new ArrayList<>(row);
+            newRow.add(0, rowId.toString());
+            writer.write(String.join(",", newRow) + "\n");
+
+            this.id++;
         }
+
+        writer.close();
     }
 
     public static void main(String[] args) throws IOException {
