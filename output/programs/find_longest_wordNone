@@ -26,7 +26,7 @@ public class FindLongestWord {
         }
     }
 
-    // Main method to run the tests
+    // Main method to run tests
     public static void main(String[] args) {
         org.junit.runner.JUnitCore.main("FindLongestWord$TestSolution");
     }
