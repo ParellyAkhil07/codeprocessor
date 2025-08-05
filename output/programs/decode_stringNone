@@ -1,65 +1,61 @@
 
 public class DecodeString {
 
-    // Decodes a string using the first method
+    // Decodes a string. A valid code is a sequence of numbers and letters, always starting with a number and ending with letter(s).
+    // Each number tells you how many characters to skip before finding a good letter. After each good letter should come the next number.
     public static String decode(String s) {
-        // Initialize an empty string to store the decoded result
-        String decoded = "";
+        // Runtime: O(n)
+        // Spacetime: O(n)
 
-        // Iterate over each character in the string
+        StringBuilder decoded = new StringBuilder();
+
         for (int l = 0; l < s.length(); l++) {
             try {
-                // Try to parse the character as an integer
                 int num = Integer.parseInt(String.valueOf(s.charAt(l)));
-                // Append the character at the calculated position to the decoded string
-                decoded += s.charAt(num + l + 1);
+                decoded.append(s.charAt(num + l + 1));
             } catch (NumberFormatException e) {
                 // Continue if the character is not a number
-                continue;
             }
         }
 
-        // Return the decoded string
-        return decoded;
+        return decoded.toString();
     }
 
-    // Decodes a string using the second recursive method
-    public static String decode2(String s) {
-        // Call the recursive helper function
-        return _decode2(s, "", 0);
+    // Decodes a string using a recursive approach.
+    public static String decode_2(String s) {
+        // Runtime: O(n)
+        // Spacetime: O(n)
+
+        Function<Integer, String> _decode_2 = new Function<Integer, String>() {
+            @Override
+            public String apply(Integer i) {
+                if (i >= s.length()) {
+                    return "";
+                }
+
+                char current = s.charAt(i);
+                String result = "";
+
+                if (Character.isDigit(current)) {
+                    result += s.charAt(Character.getNumericValue(current) + i + 1);
+                }
+
+                return result + apply(i + 1);
+            }
+        };
+
+        return _decode_2.apply(0);
     }
 
-    // Recursive helper function for decode2
-    private static String _decode2(String s, String decoded, int i) {
-        // Base case: if index is out of bounds, return the decoded string
-        if (i >= s.length()) {
-            return decoded;
-        }
-
-        // Get the current character
-        char current = s.charAt(i);
-
-        // Check if the current character is a digit
-        if (Character.isDigit(current)) {
-            // Append the character at the calculated position to the decoded string
-            decoded += s.charAt(Character.getNumericValue(current) + i + 1);
-        }
-
-        // Recursive call with the next index
-        return _decode2(s, decoded, i + 1);
-    }
-
-    // Main method for testing
     public static void main(String[] args) {
         // Test cases
-        System.out.println(decode("0h")); // Output: h
-        System.out.println(decode("2abh")); // Output: h
-        System.out.println(decode("0h1ae2bcy")); // Output: hey
+        assert decode("0h").equals("h");
+        assert decode("2abh").equals("h");
+        assert decode("0h1ae2bcy").equals("hey");
 
-        System.out.println(decode2("0h")); // Output: h
-        System.out.println(decode2("2abh")); // Output: h
-        System.out.println(decode2("0h1ae2bcy")); // Output: hey
+        assert decode_2("0h").equals("h");
+        assert decode_2("2abh").equals("h");
+        assert decode_2("0h1ae2bcy").equals("hey");
 
-        // Indicate all tests passed
         System.out.println("ALL TESTS PASSED!");
     }
