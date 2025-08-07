@@ -11,14 +11,15 @@ public class PrintRecursively {
         // Print the first element of the list
         System.out.println(lst.get(0));
 
-        // Recursively call the method with the rest of the list
+        // Recursive call with the rest of the list
         printRecursively(lst.subList(1, lst.size()));
     }
 
     public static void main(String[] args) {
         // Test the printRecursively method
-        printRecursively(List.of(1, 2, 3));
+        List<Integer> testList = List.of(1, 2, 3);
+        printRecursively(testList);
 
-        // Indicate all tests passed
+        // Check if all tests passed
         System.out.println("ALL TESTS PASSED");
     }
