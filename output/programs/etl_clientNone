@@ -3,7 +3,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-class ETLClient {
+public class ETLClient {
 
     public String run(DocumentService service, int maxRequests) {
         // Initialize the document structure
@@ -17,35 +17,33 @@ class ETLClient {
                 try {
                     Map<String, Object> event = service.handleRequest();
 
-                    if ("add".equals(event.get("operation"))) {
+                    if (event.get("operation").equals("add")) {
                         // Handle 'add' operation
                         Map<String, String> document = (Map<String, String>) event.get("document");
                         String docId = document.get("id");
                         String[] docData = removeWords(document.get("data"));
 
-                        // Add new document
+                        // Add new docId and data
                         ((Map<String, String[]>) documents.get("docs")).put(docId, docData);
 
                         // Increment document count
                         documents.put("doc-count", (int) documents.get("doc-count") + 1);
                     }
 
-                    if ("update".equals(event.get("operation"))) {
+                    if (event.get("operation").equals("update")) {
                         // Handle 'update' operation
                         Map<String, String> document = (Map<String, String>) event.get("document");
                         String docId = document.get("id");
                         String[] docData = removeWords(document.get("data"));
 
-                        // Update document data
+                        // Update doc data by doc id
                         ((Map<String, String[]>) documents.get("docs")).put(docId, docData);
                     }
 
-                    if ("delete".equals(event.get("operation"))) {
+                    if (event.get("operation").equals("delete")) {
                         // Handle 'delete' operation
                         String docId = (String) event.get("document-id");
                         Map<String, String[]> docs = (Map<String, String[]>) documents.get("docs");
-
-                        // Remove document
                         docs.remove(docId);
 
                         // Decrement document count
@@ -53,7 +51,7 @@ class ETLClient {
                     }
 
                 } catch (RetryImmediatelyError e) {
-                    // Increment error count on retry error
+                    // Increment error count for retry errors
                     documents.put("error-count", (int) documents.get("error-count") + 1);
                     continue;
                 }
@@ -61,12 +59,12 @@ class ETLClient {
             }
         }
 
-        // Convert documents map to JSON string
+        // Return the JSON string representation of the documents
         return new JSONObject(documents).toString();
     }
 
-    private String[] removeWords(String data) {
-        // Remove specific words from the document data
+    private String[] removeWords(String string) {
+        // Sanitize string data in documents
         Set<String> removeWords = new HashSet<>();
         removeWords.add("and");
         removeWords.add("or");
@@ -75,18 +73,9 @@ class ETLClient {
         removeWords.add("to");
         removeWords.add("in");
 
-        String[] words = data.toLowerCase().split(" ");
+        String[] words = string.toLowerCase().split(" ");
         return Arrays.stream(words)
                 .filter(word -> !removeWords.contains(word))
                 .toArray(String[]::new);
     }
 }
-
-// Dummy classes for compilation
-class DocumentService {
-    public Map<String, Object> handleRequest() throws RetryImmediatelyError {
-        return new HashMap<>();
-    }
-}
-
-class RetryImmediatelyError extends Exception {
