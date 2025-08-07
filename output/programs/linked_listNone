@@ -15,9 +15,9 @@ class LinkedList {
     private Node head;
     private Node tail;
 
-    LinkedList(Node head) {
-        this.head = head;
-        this.tail = head;
+    LinkedList() {
+        this.head = null;
+        this.tail = null;
     }
 
     public void insert(int data, int position) {
@@ -38,6 +38,9 @@ class LinkedList {
                 tail.next = newNode;
             }
             tail = newNode;
+            if (head == null) {
+                head = newNode;
+            }
             return;
         }
 
@@ -47,9 +50,7 @@ class LinkedList {
 
         while (curr != null) {
             if (position == index) {
-                if (prev != null) {
-                    prev.next = newNode;
-                }
+                prev.next = newNode;
                 newNode.next = curr;
                 return;
             }
@@ -62,11 +63,6 @@ class LinkedList {
     public int size() {
         // Returns the length of the linked list
         int size = 0;
-
-        if (head == null && tail == null) {
-            return size;
-        }
-
         Node curr = head;
 
         while (curr != null) {
@@ -101,9 +97,7 @@ class LinkedList {
                 if (curr == head) {
                     head = curr.next;
                 } else {
-                    if (prev != null) {
-                        prev.next = curr.next;
-                    }
+                    prev.next = curr.next;
                 }
                 if (curr == tail) {
                     tail = prev;
