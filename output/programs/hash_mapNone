@@ -4,101 +4,110 @@ import java.util.List;
 
 public class HashMap {
 
-    private List<List<Pair>> hash;
+    private List<List<KeyValuePair>> hash;
 
+    // Constructor to initialize the hash map with 64 empty lists
     public HashMap() {
-        // Creates hash list of lists with 64 slots
         hash = new ArrayList<>();
         for (int i = 0; i < 64; i++) {
             hash.add(new ArrayList<>());
         }
     }
 
+    // Hashing function to calculate the index for a given key
     private int hashing(String key) {
-        // Hashes a key and returns the hashed index
         int value = 0;
-
-        // Gets the total ASCII value of the key
+        // Calculate the total ASCII value of the key
         for (char c : key.toCharArray()) {
             value += (int) c;
         }
-
-        // Returns index of range(0, 64) for each of the 64 slots
+        // Return index in the range of 0 to 63
         return value % 64;
     }
 
-    public Object findVal(String key) throws KeyError {
-        // Finds the key and returns the value in hashmap, if none throws KeyError
+    // Method to find the value associated with a key
+    public String findVal(String key) throws KeyNotFoundException {
         int index = hashing(key);
-        List<Pair> position = hash.get(index);
+        List<KeyValuePair> position = hash.get(index);
 
         if (!position.isEmpty()) {
-            // Loops through items at hashed index to return tuple value
-            for (Pair item : position) {
-                if (item.key.equals(key)) {
-                    return item.value;
+            // Loop through items at hashed index to find the key
+            for (KeyValuePair item : position) {
+                if (item.getKey().equals(key)) {
+                    return item.getValue();
                 }
             }
-            throw new KeyError("Key does not exist.");
+            throw new KeyNotFoundException("Key does not exist.");
         } else {
-            throw new KeyError("Key does not exist.");
+            throw new KeyNotFoundException("Key does not exist.");
         }
     }
 
-    public void updateOrAdd(String key, Object val) {
-        // Updates or adds a new key value pair
+    // Method to update or add a new key-value pair
+    public void updateOrAdd(String key, String val) {
         int index = hashing(key);
-        List<Pair> position = hash.get(index);
+        List<KeyValuePair> position = hash.get(index);
 
-        // Loops through items at hashed index
         if (!position.isEmpty()) {
             // Update the value if the key exists
-            for (Pair item : position) {
-                if (item.key.equals(key)) {
-                    item.value = val;
+            for (KeyValuePair item : position) {
+                if (item.getKey().equals(key)) {
+                    item.setValue(val);
                     return;
                 }
             }
-            // If no key exists
-            position.add(new Pair(key, val));
+            // If no key exists, add new key-value pair
+            position.add(new KeyValuePair(key, val));
         } else {
-            // If list is empty
-            position.add(new Pair(key, val));
+            // If list is empty, add new key-value pair
+            position.add(new KeyValuePair(key, val));
         }
     }
 
-    public void delete(String key) throws KeyError {
-        // Takes a key and deletes the key and value from the hashmap
+    // Method to delete a key-value pair
+    public void delete(String key) throws KeyNotFoundException {
         int index = hashing(key);
-        List<Pair> position = hash.get(index);
+        List<KeyValuePair> position = hash.get(index);
 
         if (!position.isEmpty()) {
             for (int i = 0; i < position.size(); i++) {
-                if (position.get(i).key.equals(key)) {
+                if (position.get(i).getKey().equals(key)) {
                     position.remove(i);
                     return;
                 }
             }
-            throw new KeyError("Key does not exist.");
+            throw new KeyNotFoundException("Key does not exist.");
         } else {
-            throw new KeyError("Key does not exist.");
+            throw new KeyNotFoundException("Key does not exist.");
         }
     }
 
-    // Helper class to store key-value pairs
-    private static class Pair {
-        String key;
-        Object value;
+    // Inner class to represent a key-value pair
+    private static class KeyValuePair {
+        private String key;
+        private String value;
 
-        Pair(String key, Object value) {
+        public KeyValuePair(String key, String value) {
             this.key = key;
+            this.value = value;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
             this.value = value;
         }
     }
 
-    // Custom exception for key errors
-    public static class KeyError extends Exception {
-        public KeyError(String message) {
+    // Custom exception for key not found
+    public static class KeyNotFoundException extends Exception {
+        public KeyNotFoundException(String message) {
             super(message);
         }
     }
