@@ -1,1 +1,18 @@
-// // TRUCK LOADING CONTAINER
+
+// Define a class for handling truck loading
+public class TruckLoadingContainer {
+
+    // Method to load the container onto the truck
+    public void loadContainer() {
+        // Logic for loading the container
+        System.out.println("Loading container onto the truck...");
+    }
+
+    // Main method to execute the loading process
+    public static void main(String[] args) {
+        // Create an instance of TruckLoadingContainer
+        TruckLoadingContainer loader = new TruckLoadingContainer();
+        
+        // Call the method to load the container
+        loader.loadContainer();
+    }
