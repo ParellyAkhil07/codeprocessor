@@ -26,9 +26,8 @@ public class HighestProductOfThree {
                 if (product > highestTwo) {
                     highestTwo = product;
                 }
-            } 
-            // Update lowest and lowestTwo if currentNum is smaller
-            else if (currentNum < lowest) {
+            // Update lowest and lowestTwo if currentNum is lesser
+            } else if (currentNum < lowest) {
                 lowest = currentNum;
                 if (product < lowestTwo) {
                     lowestTwo = product;
