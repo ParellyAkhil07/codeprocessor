@@ -7,15 +7,17 @@ public class CountRecursively {
         if (lst.isEmpty()) {
             return 0;
         }
-        // Recursive case: count the first element and recurse on the rest of the list
+        // Recursive case: count the first element and the rest of the list
         return 1 + countRecursively(lst.subList(1, lst.size()));
     }
 
     public static void main(String[] args) {
         // Test cases
-        assert countRecursively(List.of()) == 0 : "Test case 1 failed";
-        assert countRecursively(List.of(1, 2, 3)) == 3 : "Test case 2 failed";
+        System.out.println(countRecursively(List.of())); // Expected output: 0
+        System.out.println(countRecursively(List.of(1, 2, 3))); // Expected output: 3
 
-        // If no assertion errors, print success message
-        System.out.println("ALL TESTS PASSED!");
+        // Check if all tests passed
+        if (countRecursively(List.of()) == 0 && countRecursively(List.of(1, 2, 3)) == 3) {
+            System.out.println("ALL TESTS PASSED!");
+        }
     }
