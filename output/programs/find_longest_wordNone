@@ -1,4 +1,3 @@
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class FindLongestWord {
@@ -18,15 +17,15 @@ public class FindLongestWord {
     // Unit test class
     public static class TestSolution {
 
-        // Test method for findLongestWord
         @Test
         public void testFindLongestWord() {
-            assertEquals(5, findLongestWord(new String[]{"hi", "hello"}));
-            assertEquals(12, findLongestWord(new String[]{"Balloonicorn", "Hackbright"}));
+            // Test cases to verify the findLongestWord method
+            assertEquals(5, FindLongestWord.findLongestWord(new String[]{"hi", "hello"}));
+            assertEquals(12, FindLongestWord.findLongestWord(new String[]{"Balloonicorn", "Hackbright"}));
         }
     }
 
-    // Main method to run tests
     public static void main(String[] args) {
+        // Run the unit tests
         org.junit.runner.JUnitCore.main("FindLongestWord$TestSolution");
     }
