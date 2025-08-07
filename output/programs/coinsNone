@@ -7,13 +7,12 @@ public class Coins {
         Set<Integer> combos = new HashSet<>();
         int[] coins = {1, 10};
 
-        // Recursive helper function
+        // Recursive helper method to calculate combinations
         _coins(numCoins, combos, 0, coins);
 
         return combos;
     }
 
-    // Helper method for recursive calculation
     private static void _coins(int coinsLeft, Set<Integer> combos, int total, int[] coins) {
         if (coinsLeft == 0) {
             combos.add(total);
@@ -31,13 +30,12 @@ public class Coins {
         int dimes = 10;
         int pennies = 1;
 
-        // Recursive helper function
+        // Recursive helper method to calculate combinations
         _coins_2(numCoins, combos, 0, dimes, pennies);
 
         return combos;
     }
 
-    // Helper method for recursive calculation
     private static void _coins_2(int coinsLeft, Set<Integer> combos, int total, int dimes, int pennies) {
         if (coinsLeft == 0) {
             combos.add(total);
@@ -49,7 +47,7 @@ public class Coins {
     }
 
     public static void main(String[] args) {
-        // Test cases
+        // Test cases to verify the functionality
         System.out.println(coins(1).equals(Set.of(1, 10))); // True
         System.out.println(coins(2).equals(Set.of(2, 11, 20))); // True
         System.out.println(coins(3).equals(Set.of(3, 12, 21, 30))); // True
