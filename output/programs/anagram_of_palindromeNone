@@ -3,17 +3,17 @@ public class AnagramOfPalindrome {
 
     // Is the word an anagram of a palindrome?
     public static boolean isAnagramOfPalindrome(String word) {
-        // Create a dictionary to count occurrences of each character
-        HashMap<Character, Integer> wordDict = new HashMap<>();
+        // Create a HashMap to count occurrences of each character
+        HashMap<Character, Integer> wordMap = new HashMap<>();
 
-        // Count each character in the word
+        // Populate the HashMap with character counts
         for (char l : word.toCharArray()) {
-            wordDict.put(l, wordDict.getOrDefault(l, 0) + 1);
+            wordMap.put(l, wordMap.getOrDefault(l, 0) + 1);
         }
 
         // Check the number of characters with odd counts
         int oddCount = 0;
-        for (int count : wordDict.values()) {
+        for (int count : wordMap.values()) {
             if (count % 2 != 0) {
                 oddCount++;
             }
