@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Random;
 
 public class SortFractions {
+
     public static void main(String[] args) {
         Random random = new Random();
         List<Double> nums = new ArrayList<>();
@@ -13,26 +14,23 @@ public class SortFractions {
             nums.add(num);
         }
 
-        // Sort nums using only the fractional portion of each number
-        List<String> sortedFractions = sortFractional(nums);
-        System.out.println(sortedFractions);
+        // Print sorted numbers based on their fractional part
+        System.out.println(sortFractional(nums));
     }
 
+    // Sort numbers based on their fractional part
     public static List<String> sortFractional(List<Double> nums) {
-        List<String> fractions = new ArrayList<>();
+        List<String> fractionalParts = new ArrayList<>();
 
-        // Extract the fractional part of each number as a string
         for (Double num : nums) {
             String numStr = num.toString();
             int index = numStr.indexOf('.');
-            if (index != -1) {
-                fractions.add(numStr.substring(index + 1));
-            } else {
-                fractions.add("0"); // If no fractional part, consider it as 0
-            }
+            // Extract the fractional part
+            String fractionalPart = numStr.substring(index + 1);
+            fractionalParts.add(fractionalPart);
         }
 
         // Sort the list of fractional parts
-        Collections.sort(fractions);
-        return fractions;
+        Collections.sort(fractionalParts);
+        return fractionalParts;
     }
