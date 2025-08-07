@@ -1,7 +1,7 @@
 
 public class SortDictByValue {
     public static void main(String[] args) {
-        // Initialize the map with unsorted data
+        // Initialize the map with data
         Map<String, Integer> data = new HashMap<>();
         data.put("one", 1);
         data.put("two", 2);
@@ -11,7 +11,7 @@ public class SortDictByValue {
         // Create a list from the map entries
         List<Map.Entry<String, Integer>> list = new ArrayList<>(data.entrySet());
 
-        // Sort the list by value using a comparator
+        // Sort the list based on the values
         list.sort(Map.Entry.comparingByValue());
 
         // Create a LinkedHashMap to preserve the order of insertion
