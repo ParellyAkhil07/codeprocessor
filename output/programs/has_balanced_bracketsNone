@@ -5,9 +5,9 @@ import static org.junit.Assert.*;
 
 public class BalancedBrackets {
 
-    // Method to check if a string has balanced brackets
+    // Method to check if the string has balanced brackets
     public static boolean hasBalancedBrackets(String phrase) {
-        // Map to hold matching pairs of brackets
+        // Mapping of closing brackets to their corresponding opening brackets
         HashMap<Character, Character> brackets = new HashMap<>();
         brackets.put(']', '[');
         brackets.put('}', '{');
@@ -31,23 +31,21 @@ public class BalancedBrackets {
         // Stack to keep track of seen opening brackets
         Stack<Character> seen = new Stack<>();
 
-        // Iterate over each character in the phrase
+        // Iterate through each character in the string
         for (char let : phrase.toCharArray()) {
             if (openBrackets.contains(let)) {
-                seen.push(let); // Add opening bracket to stack
+                seen.push(let); // Push opening bracket onto stack
             }
             if (closeBrackets.contains(let)) {
-                // Check if the stack is not empty and the top of the stack matches the current closing bracket
                 if (!seen.isEmpty() && brackets.get(let) == seen.peek()) {
-                    seen.pop(); // Remove the matching opening bracket from the stack
+                    seen.pop(); // Pop matching opening bracket from stack
                 } else {
                     return false; // Unmatched closing bracket
                 }
             }
         }
 
-        // If stack is empty, all brackets were matched
-        return seen.isEmpty();
+        return seen.isEmpty(); // Check if all brackets are matched
     }
 
     // Unit tests for the hasBalancedBrackets method
@@ -68,6 +66,7 @@ public class BalancedBrackets {
         }
     }
 
+    // Main method to run the tests
     public static void main(String[] args) {
         org.junit.runner.JUnitCore.main("BalancedBrackets$TestSolutions");
     }
