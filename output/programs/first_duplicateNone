@@ -1,36 +1,40 @@
 
 public class FirstDuplicate {
 
-    // Function to find the first duplicate number with minimal second occurrence index
+    // Function to find the first duplicate number with minimal index for its second occurrence
     public static int firstDuplicate(int[] a) {
-        int lowestIndex = a.length;
+        int lowestIndex = a.length; // Initialize lowest index to the length of the array
+
         for (int i = 0; i < a.length; i++) {
             int num = a[i];
+            // Check if the number appears again in the array
             for (int j = i + 1; j < a.length; j++) {
                 if (a[j] == num) {
                     if (j < lowestIndex) {
-                        lowestIndex = j;
+                        lowestIndex = j; // Update lowest index if a smaller index is found
                     }
+                    break;
                 }
             }
         }
-        if (lowestIndex < a.length) {
-            return a[lowestIndex];
-        }
-        return -1;
+
+        // Return the number at the lowest index if found, otherwise return -1
+        return (lowestIndex < a.length) ? a[lowestIndex] : -1;
     }
 
-    // Optimized function to find the first duplicate number
+    // Optimized function to find the first duplicate number with minimal index for its second occurrence
     public static int firstDuplicateOptimized(int[] arr) {
         for (int i = 0; i < arr.length; i++) {
-            int value = Math.abs(arr[i]) - 1;
+            int value = Math.abs(arr[i]) - 1; // Get the index based on the value
+
             if (arr[value] >= 0) {
-                arr[value] = -arr[value];
+                arr[value] = -arr[value]; // Mark the value as visited by making it negative
             } else {
-                return Math.abs(arr[i]);
+                return Math.abs(arr[i]); // If already negative, it's a duplicate
             }
         }
-        return -1;
+
+        return -1; // Return -1 if no duplicates are found
     }
 
     public static void main(String[] args) {
@@ -42,6 +46,11 @@ public class FirstDuplicate {
         System.out.println(firstDuplicateOptimized(new int[]{2, 2})); // 2
         System.out.println(firstDuplicateOptimized(new int[]{2, 4, 3, 5, 1})); // -1
 
-        // Check if all tests passed
-        System.out.println("All tests passed!");
+        // Run tests for the non-optimized version
+        System.out.println(firstDuplicate(new int[]{8, 4, 6, 2, 6, 4, 7, 9, 5, 8})); // 6
+        System.out.println(firstDuplicate(new int[]{2, 3, 3, 1, 5, 2})); // 3
+        System.out.println(firstDuplicate(new int[]{1})); // -1
+        System.out.println(firstDuplicate(new int[]{2, 1})); // -1
+        System.out.println(firstDuplicate(new int[]{2, 2})); // 2
+        System.out.println(firstDuplicate(new int[]{2, 4, 3, 5, 1})); // -1
     }
