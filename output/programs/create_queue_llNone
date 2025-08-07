@@ -1,18 +1,18 @@
 class Node {
-    Object data; // Data stored in the node
-    Node next;   // Reference to the next node
+    String data;
+    Node next;
 
-    // Constructor to initialize the node with data
-    public Node(Object data) {
+    // Constructor to initialize a node with data
+    public Node(String data) {
         this.data = data;
         this.next = null;
     }
 }
 
-// Queue class implemented using a linked list
+// Queue class using a linked list
 class Queue {
-    private Node head; // Reference to the front of the queue
-    private Node tail; // Reference to the end of the queue
+    private Node head;
+    private Node tail;
 
     // Constructor to initialize an empty queue
     public Queue() {
@@ -20,19 +20,9 @@ class Queue {
         this.tail = null;
     }
 
-    // Method to get the string representation of the queue
-    @Override
-    public String toString() {
-        if (isEmpty()) {
-            return "<Queue (empty)>";
-        } else {
-            return "<Queue " + head.data + ">";
-        }
-    }
-
     // Method to get the length of the queue
     public int length() {
-        Node curr = head;
+        Node curr = this.head;
         int length = 0;
 
         while (curr != null) {
@@ -44,45 +34,45 @@ class Queue {
     }
 
     // Method to add an item to the end of the queue
-    public void enqueue(Object item) {
+    public void enqueue(String item) {
         Node newNode = new Node(item);
 
-        if (head == null && tail == null) {
-            head = newNode;
-            tail = newNode;
+        if (this.head == null && this.tail == null) {
+            this.head = newNode;
+            this.tail = newNode;
         } else {
-            tail.next = newNode;
-            tail = newNode;
+            this.tail.next = newNode;
+            this.tail = newNode;
         }
     }
 
     // Method to remove and return the item from the front of the queue
-    public Object dequeue() {
-        if (head == null) {
+    public String dequeue() {
+        if (this.head == null) {
             return null;
         } else {
-            Object dequeued = head.data;
-            head = head.next;
+            String dequeued = this.head.data;
+            this.head = this.head.next;
             return dequeued;
         }
     }
 
     // Method to check if the queue is empty
     public boolean isEmpty() {
-        return head == null;
+        return this.head == null;
     }
 
     // Method to return but not remove the first item in the queue
-    public Object peek() {
-        if (head == null) {
+    public String peek() {
+        if (this.head == null) {
             return null;
         }
-        return head.data;
+        return this.head.data;
     }
 
-    // Method to print the items in the queue as a list
+    // Method to print items in the queue as a list
     public void printQueue() {
-        Node curr = head;
+        Node curr = this.head;
         if (curr == null) {
             System.out.println("[]");
             return;
@@ -100,19 +90,21 @@ class Queue {
         System.out.println(queue.toString());
     }
 
-    // Main method to run simple tests
+    // Main method to test the Queue class
     public static void main(String[] args) {
         Queue q = new Queue();
         q.enqueue("buy flight");
         q.enqueue("pack");
         q.enqueue("enjoy vacation");
 
-        q.printQueue(); // ['buy flight', 'pack', 'enjoy vacation']
-        System.out.println(q.length()); // 3
+        q.printQueue(); // Output: ['buy flight', 'pack', 'enjoy vacation']
+        System.out.println(q.length()); // Output: 3
 
-        System.out.println(q.dequeue()); // 'buy flight'
-        q.printQueue(); // ['pack', 'enjoy vacation']
+        System.out.println(q.dequeue()); // Output: 'buy flight'
+        q.printQueue(); // Output: ['pack', 'enjoy vacation']
 
-        System.out.println(q.isEmpty()); // false
-        System.out.println(q.peek()); // 'pack'
+        System.out.println(q.isEmpty()); // Output: false
+
+        System.out.println(q.peek()); // Output: 'pack'
+        q.printQueue(); // Output: ['pack', 'enjoy vacation']
     }
