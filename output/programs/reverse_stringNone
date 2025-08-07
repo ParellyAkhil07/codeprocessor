@@ -1,11 +1,10 @@
-// Can't use .reverse()
+// Can't use built-in reverse methods
 
 public class ReverseString {
 
-    // Method to reverse a string using a loop
+    // Reverse a string using a loop
     public static String revStr(String string) {
         // Runtime: O(n)
-
         String reversedStr = "";
         char[] listStr = string.toCharArray();
         // ['h', 'e', 'l', 'l', 'o']
@@ -18,21 +17,18 @@ public class ReverseString {
         return reversedStr;
     }
 
-    // Method to reverse a string using StringBuilder
+    // Reverse a string using StringBuilder
     public static String revStr2(String string) {
         // Runtime: O(n)
-
         return new StringBuilder(string).reverse().toString();
     }
 
-    // Method to reverse a string using recursion
+    // Reverse a string using recursion
     public static String revStr3(String string) {
         // Runtime: O(n)
-
         if (string.length() == 0) {
             return string;
         }
-
         return string.charAt(string.length() - 1) + revStr3(string.substring(0, string.length() - 1));
     }
 
