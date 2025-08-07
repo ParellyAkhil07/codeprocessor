@@ -7,19 +7,15 @@ public class NonNegIntFinder {
     // Spacetime: O(n)
 
     public static Integer findInt(int[] arr) {
+        // Create a HashSet to store the integers from the array for O(1) lookup
         HashSet<Integer> arrSet = new HashSet<>();
 
-        // If the length of the array is equal to the maximum allowed integers, there are no missing integers in the array.
-        if (arr.length == Integer.MAX_VALUE) {
-            return null;
-        }
-
-        // Create an O(1) lookup hashtable using the integers from the array as the key
+        // Add all elements of the array to the HashSet
         for (int num : arr) {
             arrSet.add(num);
         }
 
-        // Loop through the length of the array + 1 and check if the number is a key in the hashtable.
+        // Loop through the length of the array + 1 and check if the number is in the HashSet.
         // If it isn't, return that number.
         for (int i = 0; i <= arr.length; i++) {
             if (!arrSet.contains(i)) {
@@ -27,6 +23,7 @@ public class NonNegIntFinder {
             }
         }
 
+        // If all integers are present, return null
         return null;
     }
 
