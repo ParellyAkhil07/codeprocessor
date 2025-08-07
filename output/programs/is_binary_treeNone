@@ -1,7 +1,7 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-// Node class representing each node in the binary tree
+// Define the Node class to represent each node in the binary tree
 class Node {
     int data;
     Node left;
@@ -18,13 +18,13 @@ class Node {
 // Main class containing the method to check if a tree is a BST
 public class BinaryTree {
 
-    // Method to check if the tree is a binary search tree
-    public static boolean isBST(Node root) {
-        return isBSTRecursive(root, null, null);
+    // Method to check if the binary tree is a BST
+    public static boolean isBst(Node root) {
+        return isBstRecursive(root, null, null);
     }
 
-    // Helper recursive method to validate the BST property
-    private static boolean isBSTRecursive(Node root, Integer smallest, Integer largest) {
+    // Recursive helper method to validate the BST properties
+    private static boolean isBstRecursive(Node root, Integer smallest, Integer largest) {
         if (root == null) {
             return true;
         }
@@ -37,35 +37,35 @@ public class BinaryTree {
             return false;
         }
 
-        if (!isBSTRecursive(root.left, smallest, root.data)) {
+        if (!isBstRecursive(root.left, smallest, root.data)) {
             return false;
         }
 
-        if (!isBSTRecursive(root.right, root.data, largest)) {
+        if (!isBstRecursive(root.right, root.data, largest)) {
             return false;
         }
 
         return true;
     }
 
-    // Unit tests for the isBST method
+    // Unit tests for the isBst method
     public static class Tests {
 
         // Helper method to create a non-BST
-        private Node createBST1() {
-            return new Node(5, new Node(3, new Node(1), new Node(9)), new Node(6));
+        private Node createBst1() {
+            return new Node(5, new Node(3, new Node(1, null, null), new Node(9, null, null)), new Node(6, null, null));
         }
 
         // Helper method to create a valid BST
-        private Node createBST2() {
-            return new Node(5, new Node(3, new Node(1), new Node(4)), new Node(7, new Node(6), new Node(8)));
+        private Node createBst2() {
+            return new Node(5, new Node(3, new Node(1, null, null), new Node(4, null, null)), new Node(7, new Node(6, null, null), new Node(8, null, null)));
         }
 
-        // Test method to check the isBST functionality
+        // Test method to check if the trees are BSTs
         @Test
-        public void testIsBST() {
-            assertFalse(BinaryTree.isBST(createBST1()));
-            assertTrue(BinaryTree.isBST(createBST2()));
+        public void testIsBst() {
+            assertFalse(isBst(createBst1()));
+            assertTrue(isBst(createBst2()));
         }
     }
 
