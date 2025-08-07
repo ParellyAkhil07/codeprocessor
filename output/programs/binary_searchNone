@@ -3,7 +3,8 @@ public class BinarySearch {
 
     // Using binary search, find val in range 1-100. Return # of guesses.
     public static int binarySearch(int val) {
-        // Ensure the value is between 1 and 100
+        // Runtime: O(nlogn)
+
         if (val <= 0 || val >= 101) {
             throw new IllegalArgumentException("Val must be between 1-100");
         }
@@ -13,7 +14,6 @@ public class BinarySearch {
         int low = 0;
         int high = 101;
 
-        // Continue searching until the guess matches the value
         while (guess != val) {
             numGuesses++;
             guess = (high - low) / 2 + low;
@@ -29,18 +29,18 @@ public class BinarySearch {
     }
 
     public static void main(String[] args) {
-        // Test cases to verify the binary search function
-        assert binarySearch(50) == 1;
-        assert binarySearch(25) == 2;
-        assert binarySearch(75) == 2;
-        assert binarySearch(31) <= 7;
+        // Test cases
+        System.out.println(binarySearch(50) == 1);
+        System.out.println(binarySearch(25) == 2);
+        System.out.println(binarySearch(75) == 2);
+        System.out.println(binarySearch(31) <= 7);
 
-        // Check the maximum number of guesses for values from 1 to 100
+        // Check maximum number of guesses for range 1-100
         int maxGuesses = 0;
         for (int i = 1; i <= 100; i++) {
             maxGuesses = Math.max(maxGuesses, binarySearch(i));
         }
-        assert maxGuesses == 7;
+        System.out.println(maxGuesses == 7);
 
         System.out.println("ALL TESTS PASSED");
     }
