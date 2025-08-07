@@ -2,7 +2,7 @@ import static org.junit.Assert.assertEquals;
 
 public class ClimbStairs {
 
-    // Recursive method to calculate the number of ways to climb stairs
+    // Recursive approach
     public static int climbStairs(int n) {
         // Base cases
         if (n == 0 || n == 1) {
@@ -11,44 +11,47 @@ public class ClimbStairs {
         if (n == 2) {
             return 2;
         }
-        // Recursive calls
+        // Recursive call
         return climbStairs(n - 1) + climbStairs(n - 2) + climbStairs(n - 3);
     }
 
-    // Dynamic programming approach with memoization
+    // Dynamic programming with memoization
     public static int climbStairsDP(int n) {
-        // Cache to store previously calculated results
+        // Cache for storing results
         int[] cache = new int[n + 1];
         cache[0] = 1;
         cache[1] = 1;
         if (n >= 2) {
             cache[2] = 2;
         }
-
-        // Fill the cache
+        // Fill cache
         for (int i = 3; i <= n; i++) {
             cache[i] = cache[i - 1] + cache[i - 2] + cache[i - 3];
         }
         return cache[n];
     }
 
-    // Dynamic programming approach with tabulation
+    // Dynamic programming with tabulation
     public static int climbStairsTab(int n, int[] steps) {
-        // Result array to store number of ways to reach each step
+        // Result array
         int[] result = new int[n + 1];
         result[0] = 1;
-
-        // Fill the result array
-        for (int i = 0; i < steps.length; i++) {
-            for (int j = steps[i]; j <= n; j++) {
-                result[j] += result[j - steps[i]];
+        // Fill result array
+        for (int i = 1; i <= n; i++) {
+            int sum = 0;
+            for (int step : steps) {
+                if (i - step >= 0) {
+                    sum += result[i - step];
+                }
             }
+            result[i] = sum;
         }
         return result[n];
     }
 
     // Unit tests
     public static class Testing {
+
         @Test
         public void testClimbStairs() {
             assertEquals(24, climbStairs(6));
