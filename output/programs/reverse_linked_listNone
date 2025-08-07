@@ -1,16 +1,14 @@
-
 class Node {
-    // Class representing a node in a linked list
-    int data;
-    Node next;
+    int data; // Data stored in the node
+    Node next; // Reference to the next node
 
-    // Constructor to initialize the node
+    // Constructor to initialize the node with data and optional next node
     public Node(int data, Node next) {
         this.data = data;
         this.next = next;
     }
 
-    // Method to represent the data of the node and its successors as a string
+    // Method to represent the data of this node and its successors as a string
     public String asString() {
         StringBuilder out = new StringBuilder();
         Node n = this;
@@ -24,31 +22,35 @@ class Node {
     }
 }
 
+// Class containing the method to reverse a linked list
 public class ReverseLinkedList {
 
-    // Method to reverse the linked list
+    // Method to reverse a singly linked list
     public static Node reverseLinkedList(Node head) {
         Node prev = null;
         Node curr = head;
 
         while (curr != null) {
-            Node next = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = next;
+            Node next = curr.next; // Store the next node
+            curr.next = prev; // Reverse the link
+            prev = curr; // Move prev to current node
+            curr = next; // Move to the next node
         }
 
-        return prev;
+        return prev; // New head of the reversed list
     }
 
+    // Main method to test the reverse linked list functionality
     public static void main(String[] args) {
-        // Test the reverseLinkedList method
+        // Create a linked list 1 -> 2 -> 3
         Node ll = new Node(1, new Node(2, new Node(3, null)));
+
+        // Reverse the linked list and print the result
         Node reversed = reverseLinkedList(ll);
-        System.out.println(reversed.asString()); // Should print '321'
+        System.out.println(reversed.asString()); // Expected output: "321"
 
         // Additional test
         Node ll2 = new Node(1, new Node(2, new Node(3, null)));
         Node newLl = reverseLinkedList(ll2);
-        System.out.println(newLl.asString()); // Should print '321'
+        System.out.println(newLl.asString()); // Expected output: "321"
     }
