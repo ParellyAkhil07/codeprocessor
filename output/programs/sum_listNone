@@ -1,14 +1,14 @@
 
 public class SumList {
 
-    // Using recursion, return the sum of numbers in a list
+    // Using recursion, return the sum of numbers in a list.
     public static int sumList(List<Integer> nums) {
         // Base case: if the list is empty, return 0
         if (nums.isEmpty()) {
             return 0;
         }
 
-        // Recursive case: sum the first element and the sum of the rest of the list
+        // Recursive case: add the first element to the sum of the rest of the list
         return nums.get(0) + sumList(nums.subList(1, nums.size()));
     }
 
@@ -18,4 +18,7 @@ public class SumList {
         System.out.println(sumList(List.of(-5, 10, 4)) == 9 ? "Test 2 Passed" : "Test 2 Failed");
         System.out.println(sumList(List.of(20)) == 20 ? "Test 3 Passed" : "Test 3 Failed");
         System.out.println(sumList(List.of()) == 0 ? "Test 4 Passed" : "Test 4 Failed");
+
+        // If all tests pass
+        System.out.println("ALL TESTS PASSED!");
     }
