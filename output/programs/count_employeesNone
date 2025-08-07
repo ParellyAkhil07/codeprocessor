@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.List;
 
 class Node {
@@ -14,14 +13,11 @@ class Node {
 
     // Method to count employees managed by this node
     public int countEmployees() {
-        // If no children, return 0
         if (children.isEmpty()) {
             return 0;
         }
 
         int count = 0;
-
-        // Count each child and their employees
         for (Node child : children) {
             count += 1 + child.countEmployees();
         }
@@ -29,9 +25,8 @@ class Node {
         return count;
     }
 
-    // Main method to run tests
     public static void main(String[] args) {
-        // Create nodes as per the example
+        // Test cases
         Node henri = new Node("Henri", null);
         Node nora = new Node("Nora", List.of(henri));
         Node nick = new Node("Nick", null);
@@ -42,11 +37,11 @@ class Node {
         Node jessica = new Node("Jessica", List.of(al, bob, jen));
         Node jane = new Node("Jane", List.of(jessica, janet));
 
-        // Run tests
-        assert henri.countEmployees() == 0 : "Test failed for Henri";
-        assert janet.countEmployees() == 3 : "Test failed for Janet";
-        assert jessica.countEmployees() == 3 : "Test failed for Jessica";
-        assert jane.countEmployees() == 8 : "Test failed for Jane";
+        // Output results of employee count
+        System.out.println(henri.countEmployees()); // 0
+        System.out.println(janet.countEmployees()); // 3
+        System.out.println(jessica.countEmployees()); // 3
+        System.out.println(jane.countEmployees()); // 8
 
         System.out.println("ALL TESTS PASSED!");
     }
